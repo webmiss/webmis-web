@@ -17,7 +17,7 @@
       </div>
       <ul class="app_top_tool flex">
         <li>
-          <div class="ico center" @click="openUrl('https://github.com/webmiss/base')"><i class="icon ico_github"></i></div>
+          <div class="ico center" @click="openUrl('https://github.com/webmiss')"><i class="icon ico_github"></i></div>
         </li>
         <li class="qrcode">
           <div class="ico center"><i class="icon ico_qrcode"></i></div>

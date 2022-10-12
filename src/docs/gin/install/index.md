@@ -8,14 +8,13 @@
 
 ## 一、下载
 ```bash
-# 克隆仓库
-git clone https://github.com/webmiss/base.git --depth=1
+# 克隆项目
+git clone https://github.com/webmiss/webmis-gin.git gin
+git clone https://github.com/webmiss/webmis-tools.git tools
 # 修改权限(linux)
-cd gin
-chmod -R 777 public
+chmod -R 777 gin/public/upload
 ```
-- 项目: WebMIS-Base > gin
-- 数据库: project/database/data.sql
+- 数据库: tools/database/data.sql
 - 修改密码: user表password字段，md5加密即可
 - 管理员账号: admin 密码:123456
 
