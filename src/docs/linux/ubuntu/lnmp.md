@@ -118,14 +118,27 @@ vi /etc/redis.conf
 
 
 ## PHP
-#### 1) 安装PHP7
+#### 1) 安装PHP8
 ```bash
-apt install php-fpm php-cli php-mysql php-curl php-gd -y
+# 卸载PHP
+sudo apt-get autoremove php7*
+sudo find /etc -name "*php*" |xargs  rm -rf
+sudo apt purge `dpkg -l | grep php| awk '{print $2}' |tr "\n" " "`
+dpkg -l | grep php7.0
+# 添加软件库
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+# 安装PHP8.1
+sudo apt install php8.1-fpm php8.1-cli php8.1-mysql php8.1-curl php8.1-gd -y
+# 安装Composer
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
 ```
 #### 2) 添加扩展
 ```bash
 # Redis
-apt install php-redis
+sudo apt install php8.1-redis
 
 # Phalcon
 curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
