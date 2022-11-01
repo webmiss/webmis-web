@@ -2,7 +2,7 @@
 ```go
 import "webmis/library"
 # 对象
-redis := (&library.Redis{}).New()
+redis := (&library.Redis{}).New("")
 # 关闭
 redis.Close()
 ```

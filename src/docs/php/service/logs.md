@@ -3,27 +3,25 @@
 use Service\Logs;
 ```
 
-## 访问日志
+## 日志-文件
 ```php
-Logs::Log($data);
+Logs::File(
+  string $file='',    //文件路径: upload/log/test.json
+  string $content=''  //文件内容
+);
 ```
 
-## 信息日志
+## 日志-生产者
 ```php
-Logs::Info($data);
+Logs::Logs(
+  array $data     //数据: 数组
+);
 ```
 
-## 操作日志
-```php
-Logs::Action($data);
-```
-
-## 错误日志
-```php
-Logs::Error($data);
-```
-
-## 其它
-```php
-Logs::Writer(string $text);
+## 日志-消费者
+```bash
+# 运行
+$ php cli.php Logs
+# 挂载
+nohup php cli.php Logs 2>&1 &
 ```

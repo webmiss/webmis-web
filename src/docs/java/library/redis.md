@@ -2,7 +2,7 @@
 ```java
 import webmis.library.Redis;
 // 对象
-Redis redis = new Redis();
+Redis redis = new Redis("");
 // 关闭
 redis.Close();
 ```

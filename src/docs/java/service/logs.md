@@ -3,27 +3,23 @@
 import webmis.service.Logs;
 ```
 
-## 访问日志
+## 日志-文件
 ```java
-Logs.Log(Object data);
+Logs.File(
+  String file,    //文件路径: upload/log/test.json
+  String content  //文件内容
+);
 ```
 
-## 信息日志
+## 日志-生产者
 ```java
-Logs.Info(Object data);
+Logs.Log(
+  Object data   //数据: 数组
+);
 ```
 
-## 操作日志
-```java
-Logs.Action(Object data);
-```
-
-## 错误日志
-```java
-Logs.Error(Object data);
-```
-
-## 其它
-```java
-Logs.Writer(String text);
+## 日志-消费者
+```bash
+# 挂载并运行
+middleware/Cli.java
 ```

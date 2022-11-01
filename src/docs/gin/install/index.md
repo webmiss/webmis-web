@@ -1,8 +1,8 @@
 # WebMIS-Gin
 采用Go + Gin开发，包括HMVC模块化管理、Token验证、Redis缓存等
 - 网站-API( [https://go.webmis.vip/](https://go.webmis.vip/) )
-- 前端-API( [https://go.webmis.vip/api/](https://go.webmis.vip/api/index) )
-- 后台-API( [https://go.webmis.vip/admin/](https://go.webmis.vip/admin/index) )
+- 前端-API( [https://go.webmis.vip/api/](https://go.webmis.vip/api/) )
+- 后台-API( [https://go.webmis.vip/admin/](https://go.webmis.vip/admin/) )
 
 <br/>
 

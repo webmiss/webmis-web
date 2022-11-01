@@ -6,6 +6,8 @@
 #### Yarn命令
 ```bash
 yarn build
+# 升级依赖包
+yarn upgrade-interactive --latest
 ```
 ### HBuilder 云打包
 - [HBuilder X](https://www.dcloud.io/hbuilderx.html)

@@ -42,25 +42,29 @@ import wmCascader from '@/components/form/cascader/index.vue'
 - placeholder: {type: String, default: '请输入'},   //提示: 无
 - width: {type: String, default: '100%'},           //宽度: '100%'
 - maxWidth: {type: String, default: 'auto'},        //宽度: '100%'
-- height: {type: String, default: '40px'},          //高度: '40px'
+- height: {type: String, default: '32px'},          //高度: '32px'
 - lineHeight: {type: String, default: '20px'},      //行高: '20px'
-- padding: {type: String, default: '10px 16px'},    //间距: '10px 16px'
+- padding: {type: String, default: '10px 10px'},    //间距: '10px 10px'
 - align: {type: String, default: ''},               //文本对齐方式: 'left'
 - borderRadius: {type: String, default: '4px'},     //边框圆角: '4px'
 - disabled: {type: Boolean, default: false},        //是否禁用
 - clearable: {type: Boolean, default: false},       //一键清空
+- bottonText: {type: String, default: ''},          //右侧按钮
 - @update:value //事件
 
 ## 按钮
 ```html
 <wm-button></wm-button>
 ```
-- type: {type: String, default: 'primary'},   //类型: primary、info、warning、danger
-- effect: {type: String, default: 'dark'},    //样式: plain、dark
-- height: {type: String, default: '40px'},    //高度
-- padding: {type: String, default: '0 24px'}, //间距
-- fontSize: {type: String, default: '14px'},  //字体大小
-- disabled: {type: Boolean, default: false},  //是否禁用
+- effect: {type: String, default: 'dark'},          //样式: plain, dark, text
+- type: {type: String, default: 'default'},         //类型: primary, success, warning, danger, info
+- width: {type: String, default: 'auto'},           //宽度
+- height: {type: String, default: '32px'},          //高度
+- padding: {type: String, default: '0 20px'},       //内部间距
+- margin: {type: String, default: '0 4px'},         //外部间距
+- radius: {type: String, default: '2px'},           //圆角
+- icon: {type: String, default: ''},                //图标: 'ui ui-search'
+- disabled: {type: Boolean, default: false},        //是否禁用
 
 ## 多选
 ```html
@@ -76,8 +80,11 @@ import wmCascader from '@/components/form/cascader/index.vue'
 ```html
 <wm-checkbox-group v-model:value="form.checkbox" :data="checkbox"></wm-checkbox-group>
 ```
-- value: {type: Array, default: []},    //获取值
-- data: {type: Array, default: []},     //数据: [{label:'游戏', value: 1},{label:'购物', value: 2, checked: true},{label:'其他', value: 3, disabled: true}]
+- value: {default: []},                     //获取值
+- data: {type: Array, default: []},         //数据: [{label:'游戏', value: 1},{label:'购物', value: 2, checked: true},{label:'其他', value: 3, disabled: true}]
+- width: {type: String, default: 'auto'},   //宽度
+- height: {type: String, default: '26px'},  //高度
+- margin: {type: String, default: '4px 0'}, //外部间距
 
 ## 单选
 ```html

@@ -1,8 +1,8 @@
 # WebMIS-Java
 采用Java + SpringBoot开发，包括HMVC模块化管理、Token验证、Redis缓存等
 - 网站-API( [https://java.webmis.vip/](https://java.webmis.vip/) )
-- 前端-API( [https://java.webmis.vip/api/](https://java.webmis.vip/api/index) )
-- 后台-API( [https://java.webmis.vip/admin/](https://java.webmis.vip/admin/index) )
+- 前端-API( [https://java.webmis.vip/api/](https://java.webmis.vip/api/) )
+- 后台-API( [https://java.webmis.vip/admin/](https://java.webmis.vip/admin/) )
 
 <br/>
 

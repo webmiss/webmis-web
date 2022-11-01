@@ -6,13 +6,15 @@
 - 前端-API( [https://php.webmis.vip/api/](https://php.webmis.vip/api/) )
 - 后台-API( [https://php.webmis.vip/admin/](https://php.webmis.vip/admin/) )
 
-
 <br/>
 
 ## 一、下载
 ```bash
-# 克隆项目
+# PHP8
 git clone https://github.com/webmiss/webmis-php.git php
+# Phalcon5
+git clone https://github.com/webmiss/webmis-phalcon.git phalcon
+# 数据库
 git clone https://github.com/webmiss/webmis-tools.git tools
 # 修改权限(linux)
 chmod -R 777 php/public/upload

@@ -3,27 +3,25 @@
 import "webmis/service"
 ```
 
-## 访问日志
+## 日志-文件
 ```go
-(&service.Logs{}).Log(data interface{})
+(&service.Logs{}).File(
+  file string,      //文件路径: upload/log/test.json
+  content string    //文件内容
+)
 ```
 
-## 信息日志
+## 日志-生产者
 ```go
-(&service.Logs{}).Info(data interface{})
+(&service.Logs{}).Log(
+  data interface{}    //数据: 数组
+)
 ```
 
-## 操作日志
-```go
-(&service.Logs{}).Action(data interface{})
-```
-
-## 错误日志
-```go
-(&service.Logs{}).Error(data interface{})
-```
-
-## 其它
-```go
-(&service.Logs{}).Writer(text []byte)
+## 日志-消费者
+```bash
+# 运行
+go run cli/main.go logs log
+# 挂载
+nohup go run cli/main.go logs log 2>&1 &
 ```

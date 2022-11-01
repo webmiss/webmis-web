@@ -1,8 +1,8 @@
 # WebMIS-Python
 采用Python3+Flask开发，包括HMVC模块化管理、Token验证、Redis缓存等
 - 网站-API( [https://python.webmis.vip/](https://python.webmis.vip/) )
-- 前端-API( [https://python.webmis.vip/api/](https://python.webmis.vip/api/index) )
-- 后台-API( [https://python.webmis.vip/admin/](https://python.webmis.vip/admin/index) )
+- 前端-API( [https://python.webmis.vip/api/](https://python.webmis.vip/api/) )
+- 后台-API( [https://python.webmis.vip/admin/](https://python.webmis.vip/admin/) )
 
 <br/>
 
