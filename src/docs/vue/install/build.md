@@ -42,6 +42,7 @@ server {
     charset utf-8;
 
     location / {
+        add_header Cache-Control "no-cache, no-store";
         try_files $uri $uri/ /index.html;
     }
 

@@ -12,7 +12,7 @@ $demo->Insert();
 use Model\Demo;
 // 对象
 $demo = new Demo();
-$demo->Values([
+$demo->ValuesAll([
   ['uid'=>null,'title'=>'PHP-添加'],
 ]);
 $demo->Insert();

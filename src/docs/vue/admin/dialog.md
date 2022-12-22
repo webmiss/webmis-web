@@ -11,6 +11,7 @@ import wmDialog from '@/components/dialog/index.vue'
 - title: {type: String, default: ''},             //标题
 - width: {type: String, default: '420px'},        //宽
 - height: {type: String, default: 'auto'},        //高
+- radius: {type: String, default: '4px'},         //圆角
 - header: {type: Number, default: 0},             //头部高度
 - footer: {type: Number, default: 32},            //底部高度
 - margin: {type: Number, default: 16},            //上下边距
