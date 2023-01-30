@@ -90,21 +90,23 @@ import wmCascader from '@/components/form/cascader/index.vue'
 ```html
 <wm-radio></wm-radio>
 ```
-- data: {type: Array, default: []}, //数据: [{label:'男',value:'男', disabled: true},{label:'女',value:'女'}]
 - value: {default: ''},             //默认值: val
+- data: {type: Array, default: []}, //数据: [{label:'男',value:'男', disabled: true},{label:'女',value:'女'}]
 - @update:value                     //事件
 
 ## 下拉菜单
 ```html
 <wm-select></wm-select>
 ```
-- value: {type:String, default:''},               //默认选择
-- data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', disabled: true},{label:'Option2', value:'option2'}]
+- value: {type:String, default:''},               //默认选择: 'option1'、['option1', 'option2']
+- data: {type:Array, default:[]},                 //数据: [{label:'Option1', value:'option1', checked: true},{label:'Option2', value:'option2', disabled: true}]
 - width: {type:String, default:'100%'},           //宽度
 - height: {type:String, default:'40px'},          //高度
 - placeholder: {type:String, default:'请选择'},   //提示信息
 - maxHeight: {type:String, default:'160px'},      //最大高度
-- clearable: {type: Boolean, default: false},       //一键清空
+- clearable: {type: Boolean, default: false},     //一键清空
+- search: {type: Boolean, default: false},        //搜索
+- multiple: {type: Boolean, default: false},      //多选
 - @update:value   //事件
 
 ## 级联选择器
