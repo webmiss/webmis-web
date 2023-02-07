@@ -109,7 +109,6 @@ export default defineComponent({
       // Marked文档
       this.docHtml = '';
       try {
-        console.log(url);
         const html = require(`@/docs${url}.md`);
         setTimeout(()=>{
           this.docHtml = marked.parse(html);

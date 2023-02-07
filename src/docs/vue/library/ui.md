@@ -1,7 +1,8 @@
 ## 引入
 ```javascript
 import Toast from '@/library/ui/toast'
-import UiBack from '@/library/ui/back'
+import Toast from '@/library/ui/toast'
+import Back from '@/library/ui/back'
 import Loaging from '@/library/ui/loading'
 import NavigateTo from '@/library/ui/navigate-to'
 ```
