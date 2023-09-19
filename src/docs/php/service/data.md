@@ -3,22 +3,22 @@
 use Service\Data;
 ```
 
-## 薄雾算法
+#### 薄雾算法
 ```php
 Data::Mist(string $redisName);
 ```
 
-## 雪花算法
+#### 雪花算法
 ```php
 Data::Snowflake();
 ```
 
-## 图片地址
+#### 图片地址
 ```php
 Data::Img(string $img);
 ```
 
-## 分区-获取ID
+#### 分区-获取ID
 ```php
 Data::PartitionID(
   string $date,           //日期: 2022-10-01 00:00:00
@@ -27,7 +27,7 @@ Data::PartitionID(
 );
 ```
 
-## 分区-获取名称
+#### 分区-获取名称
 ```php
 Data::PartitionName(
   int $stime,   //开始时间: 1661961600

@@ -12,6 +12,13 @@ module.exports = {
     })
     // 加载Markdown文件
     config.module.rule('md').test(/.md$/).use('text-loader').loader('text-loader').end()
+    // Less全局变量
+    const oneOfsMap = config.module.rule('less').oneOfs.store
+    oneOfsMap.forEach(item => {
+      item.use('sass-resources-loader').loader('sass-resources-loader').options({
+        resources: ['./src/assets/style/themes.less']
+      }).end()
+    })
   },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {

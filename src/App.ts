@@ -111,6 +111,8 @@ export default defineComponent({
       try {
         const html = require(`@/docs${url}.md`);
         setTimeout(()=>{
+          // 配置
+          marked.use({headerIds:false, mangle:false});
           this.docHtml = marked.parse(html);
           // 刷新样式
           HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);

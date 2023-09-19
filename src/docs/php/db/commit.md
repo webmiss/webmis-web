@@ -11,15 +11,15 @@ try {
   $m1 = new Demo();
   $m1->Values(['uid'=>null,'title'=>'PHP-事件']);
   list($sql, $args) = $m1->InsertSQL();
-  $model->Exec($conn, $sql, $args);
+  $res1 = $model->Exec($conn, $sql, $args);
   $id = $model->GetID();
   // SQL2
   $m2 = new Demo();
   $m2->Where('uid=?', $id);
   list($sql, $args) = $m2->DeleteSQL();
-  $model->Exec($conn, $sql, $args);
+  $res2 = $model->Exec($conn, $sql, $args);
   // 提交
-  $conn->commit();
+  if($res1 && $res2) $conn->commit();
 } catch (\Exception $e) {
   $conn->rollBack();
 }

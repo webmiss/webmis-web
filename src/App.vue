@@ -119,15 +119,15 @@
 </div>
 </template>
 
-<style>
+<style lang="less">
 /* 表单缩放问题 */
 @media only screen and (min-device-width : 320px) and (max-device-width : 1024px) {
   select:focus, textarea:focus, input:focus { font-size: 16px !important; }
 }
 /* 样式 */
 @import url('./assets/style/icon.css');
-@import url('./assets/style/ui.css');
-@import url('./assets/style/app.css');
+@import url('./assets/style/ui.less');
+@import url('./assets/style/app.less');
 /* 打印 */
 @import url('./assets/style/print.css');
 </style>

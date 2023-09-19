@@ -12,6 +12,9 @@
 git clone https://github.com/webmiss/webmis-web.git web
 git clone https://github.com/webmiss/webmis-app.git app
 git clone https://github.com/webmiss/webmis-admin.git admin
+
+# node模块提示版本不兼容问题
+yarn config set ignore-engines true
 ```
 - 项目: WebMIS-Base > web, app, admin
 

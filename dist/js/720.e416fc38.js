@@ -1,1 +1,0 @@
-"use strict";(self["webpackChunkwebmis_web"]=self["webpackChunkwebmis_web"]||[]).push([[720],{4720:function(e,n,r){function t(e,n,r,t,u,a){return null}r.r(n),r.d(n,{default:function(){return s}});var u=r(6252),a=(0,u.aZ)({beforeRouteEnter(e,n,r){r((e=>{e.$router.replace(n.path)}))},mounted(){}}),c=r(3744);const o=(0,c.Z)(a,[["render",t]]);var s=o}}]);

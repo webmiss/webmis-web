@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import Env from '@/env'
-import NavigateTo from '@/library/ui/navigate-to'
+import NavigateTo from '@/library/ui/navigate_to'
 import DownFile from '@/library/down/file'
 /* 组件 */
 import wmPopup from '@/components/popup/index.vue'

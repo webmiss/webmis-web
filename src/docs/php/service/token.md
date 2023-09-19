@@ -3,22 +3,21 @@
 use Service\AdminToken;
 ```
 
-## 验证
+#### Token
 ```php
+// 验证
 AdminToken::Verify(string $token, string $urlPerm);
-```
-
-## 权限数组
-```php
-AdminToken::Perm(string $token);
-```
-
-## 生成
-```php
+// 生成
 AdminToken::Create(array $data);
-```
-
-## 获取
-```php
+// 解析
 AdminToken::Token(string $token);
 ```
+
+#### 菜单权限
+```php
+// 保存
+AdminToken::savePerm($uid, string $perm);
+// 拆分
+AdminToken::getPerm(string $token);
+```
+

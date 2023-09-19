@@ -119,7 +119,7 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 #### 2) 安装PHP
 ```bash
 # PHP8   
-dnf install php81-php-fpm php81-php-cli php81-php-mysqlnd php81-php-pdo php81-php-gd php81-php-xml -y
+dnf install php81-php-fpm php81-php-cli php81-php-mysqlnd php81-php-pdo php81-php-gd php81-php-xml php81-php-mbstring -y
 # 创建连接
 ln -s /usr/bin/php81 /usr/bin/php
 php -v

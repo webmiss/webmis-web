@@ -3,27 +3,32 @@
 use Service\Base;
 ```
 
-## 返回JSON
+#### 返回数据
 ```php
 Base::GetJSON(array $data=[]);
 ```
 
-## Get参数
+#### 获取参数
 ```php
+// Get、Post
 Base::Get(string $name);
-```
-
-## Post参数
-```php
 Base::Post(string $name);
+// JSON方式
+$json = Base::Json();
+self::JsonName($json, string $name);
 ```
 
-## 输出到控制台
+#### 输出
 ```php
+// 打印信息
 Base::Print(...$content);
+// 测试数度
+Base::MicroBegin();
+Base::MicroEnd();
 ```
 
-## 异常错误
+#### 异常错误
 ```php
+// 抛出异常
 Base::Error($msg);
 ```
