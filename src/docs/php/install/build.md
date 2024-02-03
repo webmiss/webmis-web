@@ -32,7 +32,7 @@ server {
     listen       80;
     listen       [::]:80;
     server_name  php.webmis.vip;
-    set $root_path /home/www/base/php/public;
+    set $root_path /home/www/webmis/php/public;
     root $root_path;
     index index.php;
 
@@ -55,7 +55,7 @@ server {
     }
 
     location ~ \.php$ {
-        fastcgi_pass   unix:/run/php/php7.4-fpm.sock;
+        fastcgi_pass   unix:/run/php-fpm/www.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }

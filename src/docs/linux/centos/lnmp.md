@@ -18,12 +18,11 @@ systemctl start nginx
     # Gzip压缩
     gzip on;
     gzip_vary on;
-    gzip_proxied any;
     gzip_comp_level 6;
-    gzip_buffers 4 8k;
+    gzip_buffers 16 8k;
     gzip_min_length 1k;
-    gzip_http_version 1.0;
-    gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/x-icon;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/svg+xml image/x-icon;
 
     #include /etc/nginx/conf.d/*.conf;
     include /home/vhosts/*.conf;
@@ -113,7 +112,7 @@ vi /etc/redis/redis.conf
 ## PHP
 #### 1) 软件仓库
 ```bash
-dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
 ```
 
 #### 2) 安装PHP
@@ -122,9 +121,8 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring -y
 # 查看模块
 php -m
-# 开机启动
-systemctl enable php-fpm
 # 启动
+systemctl enable php-fpm
 systemctl start php-fpm
 ```
 
@@ -152,6 +150,9 @@ vi /etc/php-fpm.d/www.conf
 - user = nginx
 - group = nginx
 - listen = /run/php-fpm/www.sock
+#### 进程数
+- pm = static
+- pm.max_children = 256
 
 #### 6) Session问题
 ```bash
@@ -161,7 +162,7 @@ chmod -R 777 /var/lib/php/session
 #### 7) 探针
 ```bash
 echo '<?php phpinfo(); ?>' > /home/www/phpinfo.php
-chmod -R 777 /home/www/phpinfo.php
+chmod -R 774 /home/www/phpinfo.php
 ```
 
 #### 8) Nginx调用PHP-FPM

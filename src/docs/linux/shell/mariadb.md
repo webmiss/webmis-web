@@ -52,7 +52,7 @@ mysql -uroot -p
 mysqladmin -u root -password <新密码>
 
 # 修改密码
-mysqladmin -u root -p <旧密码> password <新密码>
+ALTER USER 'root'@'<localhost>' IDENTIFIED BY '<新密码>';
 
 # 查看配置
 show global variables like 'innodb_file_per_table';
@@ -291,6 +291,16 @@ rsync -rvu --delete root@IP:/home/test/ /home/test
 ### 5) 数据恢复
 ``` bash
 mysql -u 用户名 -p密码 数据库名 < 备份的数据库.sql
+```
+
+### 6) 文件分段
+``` bash
+# 分段
+mkdir tmp && split -b 1G xxx.sql tmp/db_
+# 传输
+scp -C tmp/db_aa root@IP:/home/db/tmp
+# 合并
+cat tmp/db_* > xxx.sql
 ```
 
 ## SSH免密码登录

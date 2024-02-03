@@ -31,12 +31,15 @@ http-server ./dist
 <br>
 
 ## 三、发布
-## Web
+```bash
+vi /home/vhosts/webmis.www.conf
+```
+#### 内容
 ```nginx
 server {
     listen       80;
-    server_name  app.webmis.vip;
-    root /home/www/base/vueapp/dist;
+    server_name  webmis.vip www.webmis.vip;
+    root /home/www/webmis/web/dist;
     index index.html;
 
     charset utf-8;
