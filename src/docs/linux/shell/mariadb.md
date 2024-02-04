@@ -5,7 +5,7 @@ set global innodb_file_per_table = 1;
 # 缓冲池(kb): 查询专用(物理内存*75%)、默认(134217728=128M)
 set global innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
 # 最大连接数: 小网站(100~200)、中型(500~800)、大型(1000~2000)
-set global max_connections = 600;
+set global max_connections = 256;
 # 查询缓存容量: 通常设置为(200-300)MB
 set global query_cache_limit = 256;
 set global query_cache_min_res_unit = 2;
