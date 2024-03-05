@@ -12,7 +12,7 @@ passwd git
 ```bash
 vi /etc/passwd
 ```
--- git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+-- git:x:1001:1001::/home/git:/bin/git-shell
 
 <br/>
 
@@ -40,6 +40,7 @@ cat id_rsa.pub >> .ssh/authorized_keys
 # 创建目录
 mkdir /home/git/gitrepo
 chown git:git /home/git/gitrepo
+chmod -R 774 /home/git
 cd /home/git/gitrepo
 # 配置
 git config --global init.defaultBranch main
@@ -59,7 +60,7 @@ git init
 touch README.md
 git add README.md
 git commit -m "first commit"
-git remote add origin git@127.0.0.1:/home/git/gitrepo/test.git
+git remote add origin webmis@127.0.0.1:/home/git/gitrepo/test.git
 git push -u origin "main"
 ```
 

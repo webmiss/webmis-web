@@ -65,4 +65,13 @@ ${name##word}		#从name的头部开始删除与word匹配的最长部分,然后�
 # 注: name为变量名,word为要匹配的字符串!
 ```
 
+### 常用工具
+``` bash
+# 域名DNS
+dnslookup webmis.vip
+# 查看连接数
+netstat -an | grep :80 | wc -l
+netstat -an | grep :443 | wc -l
+```
+
 <br/><br/>

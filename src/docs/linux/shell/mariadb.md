@@ -17,16 +17,21 @@ set global max_heap_table_size = 4*64*1024*1024;
 # 检查空闲连接: 建议(90秒/次)
 set global wait_timeout = 90;
 set global interactive_timeout = 90;
+# 开启慢查询
+show global variables like 'slow_query_log%';
+show global variables like 'long_query_time';
+set global slow_query_log='ON';
+set global long_query_time=1;
 ```
 
-#### 配置文件( vi /etc/my.cnf.d/server.cnf )
+#### 配置文件( vi /etc/my.cnf.d/mariadb-server.cnf )
 ```bash
 [mysqld]
 # 禁用DNS反向查询
 skip-name-resolve
 # 慢查询日志: 优化查询语句
-slow-query-log = 1
-long_query_time = 2
+slow-query-log = ON
+long_query_time = 1
 slow-query-log-file = /var/lib/mysql/mysql-slow.log
 ```
 

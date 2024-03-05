@@ -175,6 +175,9 @@ pip install you-get
 # SSH工具箱 (包括 ssh, scp)
 pacman -S openssh
 
+# 域名检测
+yay -S dnslookup
+
 # 远程桌面工具
 pacman -S freerdp remmina
 pacman -S vinagre

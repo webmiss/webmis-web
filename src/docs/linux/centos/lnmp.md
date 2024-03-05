@@ -14,6 +14,7 @@ systemctl start nginx
     user root
 
     keepalive_timeout 30;
+    client_body_buffer_size 2048k;
 
     # Gzip压缩
     gzip on;
