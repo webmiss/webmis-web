@@ -22,6 +22,8 @@ show global variables like 'slow_query_log%';
 show global variables like 'long_query_time';
 set global slow_query_log='ON';
 set global long_query_time=1;
+# Got timeout reading communication packets
+set global max_allowed_packet = 128*1024*1024;
 ```
 
 #### 配置文件( vi /etc/my.cnf.d/mariadb-server.cnf )
