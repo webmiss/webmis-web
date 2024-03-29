@@ -191,7 +191,13 @@ pacman -S p7zip file-roller unrar
 pacman -S ntfs-3g dosfstools
 
 # 无线AP
-pacman -S create_ap
+pacman -S dnsmasq linux-wifi-hotspot
+# 查看无线网卡
+ifconfig
+# 是否支持AP
+iw list
+# 启动
+create_ap wlo1 wlo1 webmisAP 12345678
 ```
 
 <br/><br/>
