@@ -198,6 +198,12 @@ ifconfig
 iw list
 # 启动
 create_ap wlo1 wlo1 webmisAP 12345678
+
+# 网络测速
+pacman -S speedtest-cli
+speedtest
+# 路由响应
+tracepath baidu.com
 ```
 
 <br/><br/>

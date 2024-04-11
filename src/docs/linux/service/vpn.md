@@ -2,9 +2,9 @@
 ## 安装软件
 ```bash
 # 安装
-yum install openvpn -y
+dnf install openvpn -y
 # 证书软件
-yum install easy-rsa -y
+dnf install easy-rsa -y
 ```
 
 #### 1) 证书目录
@@ -45,7 +45,7 @@ tree
 #### 4) 服务端配置文件( vi /etc/openvpn/server.conf )
 ```bash
 # 监听本机ip地址
-local 10.0.4.17
+local 10.0.8.10
 # 监听本机ip地址
 port 1194
 # 协议 tcp udp
@@ -61,7 +61,7 @@ key /etc/openvpn/easy-rsa/pki/private/server.key
 # 证书校验算法 
 dh /etc/openvpn/easy-rsa/pki/dh.pem
 # 开启TLS-auth，使用ta.key
-tls-auth /etc/openvpn/easy-rsa/ta.key 0
+# tls-auth /etc/openvpn/easy-rsa/ta.key 0
 # 加密认证算法
 cipher AES-256-GCM
 # 给客户端分配的地址池
@@ -103,7 +103,7 @@ mute 20
 tls-version-min 1.3
 ```
 
-#### 5) 创建启动程序( vi /lib/systemd/system/opervpn@.service )
+#### 5) 创建启动程序( vi /lib/systemd/system/openvpn@.service )
 ```bash
 [Unit]
 Description=OpenVPN %I

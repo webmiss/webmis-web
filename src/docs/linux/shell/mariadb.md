@@ -4,8 +4,10 @@
 set global innodb_file_per_table = 1;
 # 缓冲池(kb): 查询专用(物理内存*75%)、默认(134217728=128M)
 set global innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
+
 # 最大连接数: 小网站(100~200)、中型(500~800)、大型(1000~2000)
-set global max_connections = 256;
+show global variables like 'max_connections';
+set global max_connections = 512;
 # 查询缓存容量: 通常设置为(200-300)MB
 set global query_cache_limit = 256;
 set global query_cache_min_res_unit = 2;
@@ -15,6 +17,7 @@ set global query_cache_type = 1;
 set global tmp_table_size = 4*64*1024*1024;
 set global max_heap_table_size = 4*64*1024*1024;
 # 检查空闲连接: 建议(90秒/次)
+show global variables like 'wait_timeout';
 set global wait_timeout = 90;
 set global interactive_timeout = 90;
 # 开启慢查询
@@ -23,6 +26,7 @@ show global variables like 'long_query_time';
 set global slow_query_log='ON';
 set global long_query_time=1;
 # Got timeout reading communication packets
+show global variables like 'max_allowed_packet';
 set global max_allowed_packet = 128*1024*1024;
 ```
 
@@ -308,6 +312,16 @@ mkdir tmp && split -b 1G xxx.sql tmp/db_
 scp -C tmp/db_aa root@IP:/home/db/tmp
 # 合并
 cat tmp/db_* > xxx.sql
+```
+
+### 7) 数据文件修复
+``` bash
+# 停止
+systemctl stop mariadb
+# 修复文件
+myisamchk -r xxx.MYI
+# 启动
+systemctl start mariadb
 ```
 
 ## SSH免密码登录

@@ -118,28 +118,44 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
 
 #### 2) 安装PHP
 ```bash
-# PHP8   
+# PHP8
 dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring -y
+# PHP8.3
+dnf install php83-php-fpm php83-php-cli php83-php-mysqlnd php83-php-pdo php83-php-gd php83-php-xml php83-php-mbstring -y
 # 查看模块
 php -m
 # 启动
 systemctl enable php-fpm
 systemctl start php-fpm
+systemctl enable php83-php-fpm
+systemctl start php83-php-fpm
 ```
 
 #### 3) 添加扩展
 ```bash
-# Phalcon
-dnf install php-phalcon5 -y
 # Redis
 dnf install php-pecl-redis5 -y
+dnf install php83-php-pecl-redis6 -y
+# Pecl
+dnf install php-pear php-devel -y
 # 查看模块
 php -m
 ```
+#### Swoole
+```bash
+pecl install swoole
+# 配置文件
+vi /etc/php.d/50-swoole.ini
+```
+- ; Enable swoole extension module
+- extension = swoole.so
+
 
 #### 4) PHP配置
 ```bash
 vi /etc/php.ini
+vi /etc/opt/remi/php83/php.ini
+
 ```
 - date.timezone = "Asia/Shanghai"
 - session.save_path = "/tmp"
@@ -147,10 +163,12 @@ vi /etc/php.ini
 #### 5) PHP-FPM配置
 ```bash
 vi /etc/php-fpm.d/www.conf
+vi /etc/opt/remi/php83/php-fpm.d/www.conf
 ```
 - user = nginx
 - group = nginx
 - listen = /run/php-fpm/www.sock
+- listen = /var/opt/remi/php83/run/php-fpm/www.sock
 #### 进程数
 - pm = static
 - pm.max_children = 256
@@ -158,6 +176,7 @@ vi /etc/php-fpm.d/www.conf
 #### 6) Session问题
 ```bash
 chmod -R 777 /var/lib/php/session
+chmod -R 777 /var/opt/remi/php83/lib/php/session
 ```
 
 #### 7) 探针
@@ -173,6 +192,7 @@ vi /home/vhosts/default.conf
     location ~ \.php$ {
         #fastcgi_pass   127.0.0.1:9000;
         fastcgi_pass   unix:/run/php-fpm/www.sock;
+        #fastcgi_pass   unix:/var/opt/remi/php83/run/php-fpm/www.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }
