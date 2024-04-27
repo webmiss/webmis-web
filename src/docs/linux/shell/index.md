@@ -4,6 +4,8 @@
 ``` bash
 # 系统环境变量
 env
+export VAR_NAME="value"
+source ~/.bashrc
 # 系统变量和函数
 set
 # 树形显示所有进程
