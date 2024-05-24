@@ -10,6 +10,8 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
 ```bash
 # conda
 dnf install conda -y
+# 初始化
+conda init base
 # 创建虚拟环境
 conda create -p /home/soft/ffmpeg6
 # 激活虚拟环境
@@ -18,12 +20,19 @@ conda activate /home/soft/ffmpeg6
 # 查看虚拟环境
 conda env list
 # 安装ffmpeg
-conda install -c conda-forge::ffmpeg
-# 配置环境变量
+conda install -c conda-forge ffmpeg
+# 配置环境变量( vi /etc/profile )
 export PATH=/home/soft/ffmpeg6/bin:$PATH
-source ~/.bashrc
+source /etc/profile
 # 转码
 ffmpeg -i input.mp4 -f hls -c:v libx264 -c:a aac -hls_list_size 0 -hls_time 3 -force_key_frames "expr:gte(t,n_forced*3)" -s 1080x1920 -r 25 -hls_segment_filename output_%02d.ts output.m3u8
+```
+
+```bash
+# 退出虚拟环境
+source deactivate base
+source deactivate /home/soft/ffmpeg6
+dnf remove conda -y
 ```
 
 ## 交换空间

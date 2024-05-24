@@ -66,6 +66,14 @@ chmod -R 777 /home/www/index.html
 # 重启Nginx
 systemctl restart nginx
 ```
+
+#### 5) Nginx 系统环境变量( vi /etc/nginx/fastcgi_params )
+```bash
+fastcgi_param   OSS_ACCESS_KEY_ID       xxx;
+fastcgi_param   OSS_ACCESS_KEY_SECRET   xxx;
+# 重启服务
+systemctl reload nginx
+```
 <br/>
 
 ## MariaDB
