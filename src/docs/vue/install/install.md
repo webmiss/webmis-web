@@ -45,8 +45,7 @@ yarn -v
 
 #### 4) 安装Vue3
 ```bash
-npm install -g cnpm
-cnpm install -g @vue/cli
+yarn global add @vue/cli
 # 查看
 vue -V
 ```
@@ -84,19 +83,22 @@ vue create demo
 ```
 - ◉ Choose Vue version
 - ◉ Babel
-- ◯ TypeScript
+- ◉ TypeScript
 - ◯ Progressive Web App (PWA) Support
 - ◉ Router
 - ◉ Vuex
-- ◯ CSS Pre-processors
+- ◉ CSS Pre-processors
 - ◉ Linter / Formatter
 - ◯ Unit Testing
 - ◯ E2E Testing
 
-Use history mode for router? **Yes**<br/>
-Pick a linter / formatter config: **Basic**<br/>
-Pick additional lint features: **Lint on save**<br/>
-Where do you prefer placing config for Babel, ESLint, etc.? **In package.json**<br/>
-Save this as a preset for future projects? **Yes**<br/>
+? Use class-style component syntax? **Yes**<br/>
+? Use Babel alongside TypeScript (required for modern mode, auto-detected polyfills, transpiling JSX)? **Yes**<br/>
+? Use history mode for router? (Requires proper server setup for index fallback in production) **Yes**<br/>
+? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported by default): **Less**<br/>
+? Pick a linter / formatter config: **Basic**<br/>
+? Pick additional lint features: **Lint on save**<br/>
+? Where do you prefer placing config for Babel, ESLint, etc.? **In package.json**<br/>
+? Save this as a preset for future projects? (y/N) **n**<br/>
 
 <br/><br/>
