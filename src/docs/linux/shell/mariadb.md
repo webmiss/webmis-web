@@ -35,10 +35,14 @@ set global max_allowed_packet = 128*1024*1024;
 [mysqld]
 # 禁用DNS反向查询
 skip-name-resolve
-# 慢查询日志: 优化查询语句
-slow-query-log = ON
-long_query_time = 1
-slow-query-log-file = /var/lib/mysql/mysql-slow.log
+# 慢查询
+slow-query-log=ON
+long_query_time=1
+# 日志文件
+server-id=1
+log-bin=mysql-bin
+binlog-format=Row
+expire_logs_days=7
 ```
 
 #### 其他
