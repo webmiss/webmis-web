@@ -33,6 +33,8 @@
 
 ## 三、模拟环境
 ```bash
+# CPU
+VBoxManage modifyvm MacOS --cpu-profile "Intel Core i7-6700K"
 # MacBookPro
 VBoxManage modifyvm "MacOS" --cpuidset 00000001 000306a9 04100800 7fbae3ff bfebfbff
 VBoxManage setextradata "MacOS" "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct" "MacBookPro11,3"
