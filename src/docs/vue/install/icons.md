@@ -94,7 +94,7 @@
 <i class="ui ui_video_play"></i>
 ```
 <div class="icon_body">
-<ul class="flex_left">
+<ul class="flex_left" style="list-style: none;">
   <li>
     <div><i class="ui ui_video_play"></i></div>
     <p>Play</p>

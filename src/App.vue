@@ -1,5 +1,19 @@
 <template>
-<div id="app">
+
+  <!-- Login -->
+  <div class="app_login_bg" :style="{visibility:login.show?'inherit':'hidden'}">
+    <wm-popup v-model:show="login.show" width="100%" height="100%" position="top" :time="600">
+      <div class="app_login">
+        <div class="logo" :style="{backgroundImage:'url('+require('@/assets/logo.svg')+')', backgroundSize: '60%'}" @click="login.show=false"></div>
+        <div class="text">
+          <h1>WebMIS全栈基础框架</h1>
+          <h2>Vue3 / TypeScript / PHP / Python / SpringBoot / Gin</h2>
+        </div>
+        <div class="copy">{{ cfg.copy }}</div>
+      </div>
+    </wm-popup>
+  </div>
+  <!-- Login End -->
 
   <!-- Top -->
   <div class="app_top_body">
@@ -8,10 +22,10 @@
       <div class="app_nav_body">
         <ul class="app_nav">
           <li
-            v-for="(v,k) in nav"
+            v-for="(v,k) in menus.nav"
             :key="k"
             :class="v.value==pos[0]?'active':''"
-            @click="sea.key=''; menusClick([v.value, v.children[0].value, v.children[0].children[1].value])"
+            @click="menusClick([v.value, v.children[0].value, v.children[0].children[1].value])"
           >{{ v.label }}</li>
         </ul>
       </div>
@@ -24,7 +38,7 @@
           <div class="app_qrcode_box">
             <div class="app_qrcode_body">
               <div class="arrow arrow_up"></div>
-              <img :src="apiUrl+'index/qrcode/docs'" />
+              <img :src="cfg.apiUrl+'index/qrcode/docs'" />
               <p>手机扫描二维码</p>
             </div>
           </div>
@@ -36,7 +50,6 @@
     </div>
   </div>
   <!-- Top End -->
-
   <!-- Content -->
   <div class="app_body">
     <div class="app_content body flex">
@@ -61,7 +74,7 @@
         </ul>
         <!-- Menus -->
         <div class="app_menus_body scrollbar" v-else>
-          <template v-for="(v1,k1) in menus" :key="k1">
+          <template v-for="(v1,k1) in menus.list" :key="k1">
             <div class="app_menus_title flex" @click="v1.checked=!v1.checked">
               <h2>{{ v1.label }}</h2>
               <span :style="{transform: v1.checked?'rotate(-0deg)':'rotate(-180deg)'}">
@@ -97,26 +110,11 @@
       </div>
       <!-- Right End -->
     </div>
-    <div class="app_copy">{{copy}}</div>
+    <div class="app_copy">{{cfg.copy}}</div>
   </div>
   <!-- Content End -->
+  
 
-  <!-- Tools -->
-  <ul class="app_tools">
-    <li class="weixin">
-      <i class="icon ico_weixin"></i>
-      <div class="app_tools_box">
-        <div class="app_tools_body">
-          <div class="arrow arrow_right"></div>
-          <img :src="apiUrl+'index/qrcode/server1'" />
-          <p>联系我们</p>
-        </div>
-      </div>
-    </li>
-  </ul>
-  <!-- Tools End -->
-
-</div>
 </template>
 
 <style lang="less">
@@ -125,11 +123,9 @@
   select:focus, textarea:focus, input:focus { font-size: 16px !important; }
 }
 /* 样式 */
-@import url('./assets/style/icon.css');
+@import url('./assets/style/icon.less');
 @import url('./assets/style/ui.less');
 @import url('./assets/style/app.less');
-/* 打印 */
-@import url('./assets/style/print.css');
 </style>
 
 <script lang="ts" src="./App.ts"></script>

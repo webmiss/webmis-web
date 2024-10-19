@@ -1,137 +1,125 @@
-import { defineComponent } from 'vue';
-import Env from './env'
+import { Options } from 'vue-class-component';
+import { useStore } from 'vuex';
+/* UI组件 */
+import Base from '@/service/Base'
+import Env from '@/config/Env';
+/* JS组件 */
+import Html from '@/library/html'
 /* 组件 */
+import wmPopup from '@/components/popup/index.vue'
+/* 菜单 */
 import Menus from '@/docs/Menus'
-import HtmlLoad from '@/library/html/load'
 import { marked } from "marked";
 import printJS from 'print-js'
 
-export default defineComponent({
-  name: 'APP',
-  components: {},
-  data(){
-    const apiUrl: string = Env.apiUrl;
-    const copy: string = Env.copy;
-    // 菜单
-    const isShow: boolean = true;
-    const nav: any = Menus;
-    const sea: any = {key:'', list:[]};
-    const menus: any = [];
-    const pos: any = ['vue', 'install', 'index'];
-    // 内容
-    const addr: string = '';
-    const docHtml: string = '';
-    return {apiUrl,copy,isShow,nav,sea,menus,pos,addr,docHtml}
-  },
-  watch:{
-    $route(to,from){
-      // 百度统计
-      if(to.path){
-        // @ts-ignore
-        if(window._hmt) window._hmt.push(['_trackPageview',to.fullPath]);
-      }
-    },
-  },
-  mounted(){
-    setTimeout(() => {
-      // 路由
-      const params = this.$route.params;
-      this.pos = (params.m1 && params.m2 && params.m3)?[params.m1, params.m2, params.m3]:this.pos;
+@Options({
+  components: {wmPopup},
+})
+export default class App extends Base {
+
+  // 状态
+  private store: any = useStore();
+  state: any = this.store.state;
+  // 配置
+  cfg: any = new Env;
+  // 登录
+  login: any = {show: false};
+  isShow: boolean = true;
+  // 菜单
+  sea: any = {key:'', list:[]};
+  menus: any = {nav: Menus.all(), list:[]};
+  pos: any = ['vue', 'install', 'index'];
+  // 内容
+  addr: string = '';
+  docHtml: any = '';
+
+  /* 创建成功 */
+  created(): void {
+    // 监听
+    this.$watch('$route', (to: any, from: any, next: any)=>{
+      const arr: Array<string> = to.path.split('/').filter(Boolean);
+      this.pos = arr.length==3?arr:['vue', 'install', 'index'];
+      // @ts-ignore
+      if(window._hmt) window._hmt.push(['_trackPageview',to.fullPath]);
+    }, { deep: true });
+    this.$watch('state.isLogin', (val: boolean)=>{
+    }, { deep: true });
+  }
+
+  /* 创建完成 */
+  mounted(): void {
+    setTimeout(()=>{
+      this.login.show = true;
       this.menusClick(this.pos);
     }, 400);
-  },
-  methods:{
+  }
 
-    /* 搜索 */
-    seaInput(){
-      if(!this.sea.key) return this.sea.list = [];
+  /* 搜索 */
+  seaInput(): void {
+    if(!this.sea.key) {
+      this.sea.list = [];
+      return ;
+    }
+    // 数据
+    let data = [];
+    const reg =new RegExp(this.sea.key);
+    for(let x in this.menus){
+      for(let y in this.menus[x].children){
+        if(reg.test(this.menus[x].children[y].key)){
+          this.menus[x].children[y].url = this.menus[x].value;
+          data.push(this.menus[x].children[y])
+        }
+      }
+    }
+    this.sea.list = data;
+  }
+
+  /* 菜单 */
+  menusClick(pos: Array<string>): void {
+    this.pos = pos;
       // 数据
-      let data = [];
-      const reg =new RegExp(this.sea.key);
-      for(let x in this.menus){
-        for(let y in this.menus[x].children){
-          if(reg.test(this.menus[x].children[y].key)){
-            this.menus[x].children[y].url = this.menus[x].value;
-            data.push(this.menus[x].children[y])
+      for(let v1 of this.menus.nav){
+        if(v1.value==pos[0]){
+          v1.checked = true;
+          this.menus.list = v1.children;
+          for(let v2 of v1.children) {
+            v2.checked = v2.value==pos[1]?true:false;
           }
+        } else {
+          v1.checked = false;
         }
-      }
-      this.sea.list = data;
-    },
-
-    /* 菜单数据 */
-    menusClick(pos: any){
-      this.pos = pos;
-      // 数据
-      for(let i in Menus){
-        if(Menus[i].value==pos[0]){
-          this.menus = Menus[i].children;
-          break;
-        }
-      }
-      // 选中
-      for(let x in this.menus){
-        this.menus[x].checked = this.menus[x].value==pos[1]?true:false;
       }
       // 路由
       const url: string = '/'+pos[0]+'/'+pos[1]+'/'+pos[2];
       this.$router.push(url);
+      // 读取文件
       this.openDocs(url);
-    },
-
-    /* 打开文档 */
-    openDocs(url: string){
-      // 地址栏
-      this.addr = '';
-      let m1: any = [];
-      let m2: any = [];
-      for(let i in Menus){
-        if(Menus[i].value==this.pos[0]){
-          this.addr += Menus[i].label+' > ';
-          m1 = Menus[i].children;
-          break;
-        }
-      }
-      for(let i in m1){
-        if(m1[i].value==this.pos[1]){
-          this.addr += m1[i].label+' > ';
-          m2 = m1[i].children;
-          break;
-        }
-      }
-      for(let i in m2){
-        if(m2[i].value==this.pos[2]){
-          this.addr += m2[i].label;
-          document.title = m2[i].label + '-WebMIS';
-          break;
-        }
-      }
-      // Marked文档
-      this.docHtml = '';
-      try {
-        const html = require(`@/docs${url}.md`);
-        setTimeout(()=>{
-          // 配置
-          marked.use({headerIds:false, mangle:false});
-          this.docHtml = marked.parse(html);
-          // 刷新样式
-          HtmlLoad(['/docs/prism.css','/docs/prism.js'],true);
-        },400);
-      } catch (e) {
-        this.docHtml = '没有文件!';
-      }
-      
-    },
-
-    /* 打印 */
-    clickPrint(){
-      printJS({printable:'Print',type:'html',scanStyles:false,css:'/docs/print.css'});
-    },
-
-    /* 跳转 */
-    openUrl(url: string){
-      window.location.href = url;
-    },
-
   }
-});
+
+  /* 打开文档 */
+  openDocs(url: string): void {
+    this.docHtml = '';
+    try {
+      const html = require(`@/docs${url}.md`);
+      this.$nextTick(()=>{
+        marked.use({pedantic: false, gfm: true});
+        this.docHtml = marked.parse(html);
+        // 样式
+        Html.load(['/docs/print.css', '/docs/prism.css', '/docs/prism.js'], true);
+      });
+    } catch (e) {
+      this.docHtml = '没有文件!';
+    }
+  }
+
+  /* 打印 */
+  clickPrint(): void {
+    printJS({printable:'Print', type:'html', scanStyles:false, css:'/docs/print.css'});
+  }
+
+  /* 跳转 */
+  openUrl(url: string): void {
+    window.location.href = url;
+  }
+
+}
