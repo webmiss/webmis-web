@@ -1,33 +1,33 @@
 ## 优化( mysql -uroot -p )
 ```bash
 # 开启表InnoDB: 1开启、0关闭
-set global innodb_file_per_table = 1;
+SET GLOBAL innodb_file_per_table = 1;
 # 缓冲池(kb): 查询专用(物理内存*75%)、默认(134217728=128M)
-set global innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
+SET GLOBAL innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
+
+# MyISAM
+SET GLOBAL read_buffer_size = 33554432; 				# 32M
+SET GLOBAL sort_buffer_size = 33554432; 				# 32M
+SET GLOBAL key_buffer_size = 2147483648; 			    # 2G
+SET GLOBAL bulk_insert_buffer_size = 536870912; 		# 512M
+SET GLOBAL myisam_sort_buffer_size = 536870912; 		# 512M
+SET GLOBAL myisam_max_sort_file_size = 549755813888;	# 512G
 
 # 最大连接数: 小网站(100~200)、中型(500~800)、大型(1000~2000)
-show global variables like 'max_connections';
-set global max_connections = 512;
-# 查询缓存容量: 通常设置为(200-300)MB
-set global query_cache_limit = 256;
-set global query_cache_min_res_unit = 2;
-set global query_cache_size = 300*1024*1024;
-set global query_cache_type = 1;
-# 临时表容量和内存表最大容量: 建议(64M/1G)
-set global tmp_table_size = 4*64*1024*1024;
-set global max_heap_table_size = 4*64*1024*1024;
+SET GLOBAL max_connections = 512;
+# 查询缓存容量
+SET GLOBAL query_cache_type = ON;                       # 开启
+SET GLOBAL query_cache_size = 536870912; 			    # 512M
+SET GLOBAL query_cache_limit = 16777216;		        # 16M
+SET GLOBAL query_cache_min_res_unit = 4096;			    # 4KB
+# 临时表容量和内存表最大容量
+SET GLOBAL tmp_table_size = 8589934592;                 # 8G
+SET GLOBAL max_heap_table_size = 8589934592;            # 8G
 # 检查空闲连接: 建议(90秒/次)
-show global variables like 'wait_timeout';
-set global wait_timeout = 90;
-set global interactive_timeout = 90;
-# 开启慢查询
-show global variables like 'slow_query_log%';
-show global variables like 'long_query_time';
-set global slow_query_log='ON';
-set global long_query_time=1;
+SET GLOBAL wait_timeout = 90;
+SET GLOBAL interactive_timeout = 90;
 # Got timeout reading communication packets
-show global variables like 'max_allowed_packet';
-set global max_allowed_packet = 128*1024*1024;
+SET GLOBAL max_allowed_packet = 536870912; 			    # 512M
 ```
 
 #### 配置文件( vi /etc/my.cnf.d/mariadb-server.cnf )
@@ -67,14 +67,14 @@ mysql -uroot -p
 mysqladmin -u root -password <新密码>
 
 # 修改密码
-ALTER USER 'root'@'<localhost>' IDENTIFIED BY '<新密码>';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '<新密码>';
 
 # 查看配置
 show global variables like 'innodb_file_per_table';
 show global status like 'innodb_file_per_table';
 
 # 更改配置
-set global innodb_file_per_table = 1;
+SET GLOBAL innodb_file_per_table = 1;
 ```
 ### 创建用户
 ``` bash
@@ -133,6 +133,9 @@ alter table `<表名>` character set <utf8>;
 
 # 删除
 drop table `<表名>`;
+
+# 优化表
+OPTIMIZE TABLE `<表名1>`,`<表名2>`;
 ```
 
 ### 字段
