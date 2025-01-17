@@ -202,6 +202,13 @@ ALTER TABLE `user` partition BY RANGE(YEAR(pdate) * 100 + MONTH(pdate))(
     partition p2501 VALUES LESS THAN (202502)
 );
 
+# 分区-更新数据
+UPDATE `user` SET `pdate`=FROM_UNIXTIME(ctime, "%Y-%m-%d") WHERE pdate="1970-01-01";
+
+# 分区-测试
+UPDATE erp_goods SET pdate="2025-02-10" WHERE id=1;
+SELECT * FROM `user` PARTITION(p2502) WHERE id=1;
+
 # 分区-查看
 EXPLAIN PARTITIONS SELECT * FROM `user`;
 
