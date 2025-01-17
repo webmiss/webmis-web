@@ -190,36 +190,42 @@ VALUES
     (NULL, 'user2', '123456', '1'),
     (NULL, 'user3', '123456', '1');
 
-# 分区（RANGE）
-ALTER TABLE `user` partition BY RANGE(id)(
-    partition p0 VALUES LESS THAN (3),
-    partition p1 VALUES LESS THAN (6),
-    partition p2 VALUES LESS THAN (9)
+# 分区-添加字段
+ALTER table `user` ADD `pdate` date NOT NULL DEFAULT '1970-01-01' COMMENT '分区时间';
+
+# 分区-添加主键
+ALTER TABLE `user` ADD PRIMARY KEY `id_pdate` (`id`, `pdate`), DROP INDEX `PRIMARY`;
+
+# 分区-按月份
+ALTER TABLE `user` partition BY RANGE(YEAR(pdate) * 100 + MONTH(pdate))(
+    partition p2412 VALUES LESS THAN (202501),
+    partition p2501 VALUES LESS THAN (202502)
 );
 
-# 查看
+# 分区-查看
 EXPLAIN PARTITIONS SELECT * FROM `user`;
 
-# 添加（RANGE）
+# 分区-添加（RANGE）
 ALTER TABLE `user` ADD partition(
-    partition p3 VALUES LESS THAN maxvalue
+    partition plast VALUES LESS THAN maxvalue
 );
 
-# 拆分
-ALTER TABLE `user` REORGANIZE partition p3 into(
-    partition p3 VALUES LESS THAN (12),
-    partition p4 VALUES LESS THAN maxvalue
+# 分区-拆分
+ALTER TABLE `user` REORGANIZE partition plast into(
+    partition p2502 VALUES LESS THAN (202503),
+    partition plast VALUES LESS THAN maxvalue
 );
 
-# 合并
-ALTER TABLE `user` REORGANIZE partition p3,p4 into(
-    partition p3 VALUES LESS THAN maxvalue
+# 分区-合并
+ALTER TABLE `user` REORGANIZE partition p2502,plast into(
+    partition plast VALUES LESS THAN maxvalue
 );
 
-# 删除（包括数据）
-ALTER TABLE `user` DROP partition p0;
-# 删除（恢复非分区状态）
+# 分区-移除(恢复非分区状态)
 ALTER TABLE `user` REMOVE partitioning;
+
+# 分区-删除(包括数据)
+ALTER TABLE `user` DROP partition plast;
 
 ```
 
