@@ -1,18 +1,18 @@
 /* 配置文件 */
 export default class Env {
 
-  public mode: string = '';                 // 模式: 开发(dev)
-  public title: string = 'WebMIS';          // 项目名称
-  public version: string = '3.0.0';         // 版本
-  public baseUrl: string = '';              // 网址
-  public apiUrl: string = '/';              // 接口地址
-  public socketUrl: string = '';            // Socket地址
+  public static mode: string = '';              // 模式: 开发(dev)
+  public static title: string = 'WebMIS';       // 项目名称
+  public static version: string = '3.0.0';      // 版本
+  public static lang: string = 'zh_CN'          // 语言
   public static copy: string = '©'+(new Date()).getFullYear()+' webmis.vip';
-  public static lang: string = 'zh_CN'      // 语言
+  public baseUrl: string = '';                  // 网址
+  public apiUrl: string = 'admin/';             // 接口地址
+  public socketUrl: string = '';                // Socket地址
 
   /* 构造函数 */
   constructor() {
-    if(this.mode=='dev') {
+    if(Env.mode=='dev') {
       this.baseUrl = 'http://localhost:9000/';
       // this.socketUrl = 'ws://127.0.0.1:9001';
       this.socketUrl = 'wss://php.webmis.vip/wss';
@@ -37,7 +37,7 @@ export default class Env {
   /* Socket */
   public socket(): object {
     return {
-      start: false,             // 启动
+      start: true,              // 启动
       server: this.socketUrl,   // 服务器
       channel: 'admin',         // 频道
       time: 3000,               // 重连时间

@@ -1,20 +1,4 @@
 <template>
-
-  <!-- Login -->
-  <div class="app_login_bg" :style="{visibility:login.show?'inherit':'hidden'}">
-    <wm-popup v-model:show="login.show" width="100%" height="100%" position="top" :time="600">
-      <div class="app_login">
-        <div class="logo" :style="{backgroundImage:'url('+require('@/assets/logo.svg')+')', backgroundSize: '60%'}" @click="login.show=false"></div>
-        <div class="text">
-          <h1>WebMIS全栈基础框架</h1>
-          <h2>Vue3 / TypeScript / PHP / Python / SpringBoot / Gin</h2>
-        </div>
-        <div class="copy">{{ cfg.copy }}</div>
-      </div>
-    </wm-popup>
-  </div>
-  <!-- Login End -->
-
   <!-- Top -->
   <div class="app_top_body">
     <div class="body app_top flex">
@@ -59,16 +43,12 @@
       <div class="app_left" :style="{display:isShow?'block':'none'}">
         <!-- Search -->
         <div class="app_sea_body">
-          <i class="ui ui_search"></i>
-          <input type="text" placeholder="请输入关键字" v-model="sea.key" @input="seaInput()" />
+          <wmInput v-model:value="sea.key" @update:value="seaInput()" height="32px" lineHeight="32px" icon="ui ui_search" padding="0 10px 0 40px" placeholder="请输入关键字"></wmInput>
+          <!-- <i class="ui ui_search"></i> -->
+          <!-- <input type="text" placeholder="请输入关键字" v-model="sea.key" @input="seaInput()" /> -->
         </div>
         <ul class="app_sea_list" v-if="sea.list.length>0">
-          <li
-            v-for="(v,k) in sea.list"
-            :key="k"
-            :class="v.url==pos[1]&&v.value==pos[2]?'active':''"
-            @click="menusClick([pos[0], v.url, v.value])"
-          >
+          <li v-for="(v,k) in sea.list" :class="v.url==pos[1]&&v.value==pos[2]?'active':''" @click="menusClick([pos[0], v.url, v.value])">
             {{ v.label }}
           </li>
         </ul>
@@ -82,13 +62,7 @@
               </span>
             </div>
             <div v-show="v1.checked">
-              <div
-                v-for="(v2,k2) in v1.children"
-                :key="k2"
-                class="app_menus_li"
-                :class="v1.value==pos[1]&&v2.value==pos[2]?'active':''"
-                @click="menusClick([pos[0], v1.value, v2.value])"
-              >
+              <div v-for="(v2,k2) in v1.children" class="app_menus_li" :class="v1.value==pos[1]&&v2.value==pos[2]?'active':''" @click="menusClick([pos[0], v1.value, v2.value])">
                 <h3>{{ v2.label }}</h3>
               </div>
             </div>
@@ -104,17 +78,20 @@
           <span class="app_print" @click="clickPrint">打印/下载</span>
         </div>
         <div class="app_html scrollbar">
-          <div v-if="docHtml!=''" id="Print" class="doc_html" v-html="docHtml"></div>
-          <div v-else class="loading center">Loading...</div>
+           <div id="Print" class="doc_html">
+            <router-view v-slot="{ Component }">
+              <keep-alive>
+                <component :is="Component" :key="$route.name" />
+              </keep-alive>
+            </router-view>
+           </div>
         </div>
       </div>
       <!-- Right End -->
     </div>
-    <div class="app_copy">{{cfg.copy}}</div>
+    <div class="app_copy">{{ cfg.copy }}</div>
   </div>
   <!-- Content End -->
-  
-
 </template>
 
 <style lang="less">
@@ -128,4 +105,102 @@
 @import url('./assets/style/app.less');
 </style>
 
-<script lang="ts" src="./App.ts"></script>
+<script setup lang="ts">
+import { ref, watch, onMounted, nextTick } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+/* UI组件 */
+import Env from './config/Env';
+/* JS组件 */
+import Html from './library/html'
+/* 组件 */
+import wmInput from './components/form/input/index.vue';
+/* 菜单 */
+import Menus from './views/docs/Menus'
+import printJS from 'print-js'
+
+// 状态
+const store = useStore();
+const state = store.state;
+const route = useRoute();
+const router = useRouter();
+// 配置
+const cfg: any = Env;
+// 登录
+const isShow = ref(true);
+// 菜单
+const sea = ref({key: '', list: <any>[]});
+const menus = ref({nav: Menus.all(), list: <any>[]});
+const pos = ref(<any>[]);
+// 地址栏
+const addr = ref('');
+
+watch(()=>route, (to: any)=>{
+  const arr: Array<string> = to.path.split('/').filter(Boolean);
+  pos.value = arr.length==3?arr:['vue', 'install', 'index'];
+  menusClick(pos.value);
+  // @ts-ignore
+  if(window._hmt) window._hmt.push(['_trackPageview', to.fullPath]);
+},{ deep: true });
+
+/* 加载完成 */
+onMounted(()=>{
+});
+
+/* 搜索 */
+const seaInput = (): void => {
+  if(!sea.value.key) {
+    sea.value.list = [];
+    return ;
+  }
+  // 数据
+  let data: any = [];
+  const reg =new RegExp(sea.value.key);
+  for(let x in menus.value.list){
+    for(let y in menus.value.list[x].children){
+      if(reg.test(menus.value.list[x].children[y].key)){
+        menus.value.list[x].children[y].url = menus.value.list[x].value;
+        data.push(menus.value.list[x].children[y])
+      }
+    }
+  }
+  sea.value.list = data;
+}
+
+/* 菜单 */
+const menusClick = (tmp: Array<any>): void => {
+  pos.value = tmp;
+  // 数据
+  for(let v1 of menus.value.nav){
+    if(v1.value==tmp[0]){
+      v1.checked = true;
+      menus.value.list = v1.children;
+      for(let v2 of v1.children) {
+        if(v2.value==tmp[1]) addr.value = v1.label+' > '+v2.label;
+        v2.checked = v2.value==tmp[1]?true:false;
+      }
+    } else {
+      v1.checked = false;
+    }
+  }
+  // 路由
+  const url: string = '/'+tmp[0]+'/'+tmp[1]+'/'+tmp[2];
+  const resolved = router.resolve(url);
+  if(resolved.matched.length>0) router.push({path: url});
+  // 读取文件
+  nextTick(()=>{
+    Html.loadFile(['/docs/print.css', '/docs/prism.css', '/docs/prism.js'], true);
+  });
+}
+
+/* 打印 */
+const clickPrint = (): void => {
+  printJS({printable:'Print', type:'html', scanStyles:false, css:'/docs/print.css'});
+}
+
+/* 跳转 */
+const openUrl = (url: string): void => {
+  window.location.href = url;
+}
+
+</script>

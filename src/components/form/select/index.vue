@@ -18,7 +18,7 @@
     }">
       <span :class="position+'_arrow'"></span>
       <div class="wm-select_search" v-if="seaList.length>=seaMinLength">
-        <wm-input :value="seaVal" @update:value="seaKey($event)" :placeholder="seaPlaceholder || state.langs.keyword"></wm-input>
+        <wmInput :value="seaVal" @update:value="seaKey($event)" :placeholder="seaPlaceholder || state.langs.keyword"></wmInput>
       </div>
       <!-- List -->
       <ul class="wm-select_list scrollbar" :style="{height: bodyHeight, maxHeight: bodyMaxHeight}">
@@ -38,7 +38,7 @@
       <!-- List End -->
     </div>
     <!-- Clear -->
-    <div class="wm-select_clear_body" v-if="value&&clearable" :style="{width: height, height: height}" @click.stop="clear()">
+    <div class="wm-select_clear_body" v-if="labelName&&clearable" :style="{width: height, height: height}" @click.stop="clear()">
       <div class="wm-select_clear" :style="{width: 'calc('+height+' / 2)', height: 'calc('+height+' / 2)'}"></div>
     </div>
     <!-- Icon -->
@@ -67,7 +67,7 @@
 .wm-select_list li:hover{background-color: #F4F6F8;}
 .wm-select_list li:hover .label{color: @Primary;}
 .wm-select_list li:hover .info{background-color: #F4F6F8;}
-.wm-select_list .label{float: left; color: @Text; padding: 0 16px;}
+.wm-select_list .label{text-align: left; width: auto; max-width: none; float: left; color: @Text; padding: 0 16px;}
 .wm-select_list .info{float: right; position: absolute; right: 0; height: 100%; padding: 0 10px; font-size: 12px; color: @RegularText; background-color: #FFF;}
 .wm-select_list .null{height: 120px; line-height: 120px;}
 .wm-select_list .null:hover{cursor: default; background-color: #FFF;}
@@ -82,15 +82,15 @@
 .wm-select_clear::before{transform: translate(-50%, -50%) rotate(-45deg);}
 </style>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+<script setup lang="ts">
+import { ref, onMounted, watch, getCurrentInstance } from 'vue';
 import { useStore } from 'vuex';
-import wmInput from '@/components/form/input/index.vue'
-@Options({
-  components: { wmInput },
-  props: {
-    value: {default: ''},                                   // 默认值
-    options: {type: Array, default: []},                    // 数据: [{label:'男', value:'男', disabled: true},{label:'女', value:'女'}]
+import wmInput from '../../../components/form/input/index.vue';
+
+/* 参数 */
+const props = defineProps({
+    value: {type: [Array, String], default: ''},            // 默认值
+    options: {type: Array, default: []},                    // 数据: [{label:'男', value:'男', checked: true},{label:'女', value:'女'}]
     multiple: {type: Boolean, default: false},              // 是否多选
     width: {type: String, default: '100%'},                 // 宽
     height: {type: String, default: '40px'},                // 高
@@ -104,127 +104,116 @@ import wmInput from '@/components/form/input/index.vue'
     seaPlaceholder: {type: String, default: ''},            // 搜索提示
     clearable: {type: Boolean, default: false},             // 一键清空
     disabled: {type: Boolean, default: false},              // 禁用
-  }
-})
-export default class Select extends Vue {
+  });
+const { proxy } = getCurrentInstance() as any ;
+const emit = defineEmits(['update:value', 'change', 'data']);
+// 状态
+const store = useStore();
+const state = store.state;
+// 变量
+const show = ref(false);
+let selectObj: any = null;
+const seaVal = ref('');
+const seaList = ref(<any>[]);
+const seaDisplay = ref(true);
+const labelName = ref('');
 
-  // 参数
-  value!: any;
-  options!: any;
-  multiple!: boolean;
-  width!: string;
-  height!: string;
-  position!: string;
-  placeholder!: string;
-  bodyWidth!: string;
-  bodyHeight!: string;
-  bodyMaxHeight!: string;
-  listHeight!: string;
-  seaMinLength!: number;
-  seaPlaceholder!: string;
-  clearable!: boolean;
-  disabled!: boolean;
-  // 状态
-  store: any = useStore();
-  state: any = this.store.state;
-  // 变量
-  show: boolean = false;
-  selectObj: any = null;
-  seaVal: string = '';
-  seaList: Array<any> = [];
-  seaDisplay: boolean = true;
-  labelName: string = '';
-
-  /* 创建成功 */
-  created(): void {
-    // 监听
-    this.$watch('value', (val:Array<any>)=>{
-      if(!val) return this.clear();
-      // 勾选默认值
-      for(let i in this.seaList) {
-        if(val.includes(this.seaList[i].value)) this.selectClick(i, false);
-      }
-    }, { deep: true });
-    this.$watch('options', (val:Array<any>)=>{
-      this.seaList = val || [];
-    }, { deep: true });
-  }
-
-  /* 创建完成 */
-  public mounted(): void {
-    this.init();
-  }
-
-  /* 初始化 */
-  init(): void {
-    // 失去焦点
-    this.selectObj = this.$refs.formSelect;
-    this.selectObj.addEventListener('focusout', ()=>{
-      this.show = false;
-    });
-    // 列表数据
-    this.seaList = this.options;
-  }
-
-  /* 搜索 */
-  seaKey(key: any): void {
-    let label: string, n: number=0;
-    const reg =new RegExp(key.toLowerCase());
-    for(let i in this.seaList){
-      label = this.seaList[i].label.toLowerCase();
-      if(reg.test(label)){
-        n++;
-        this.seaList[i].display = true;
-      }else{
-        this.seaList[i].display = false;
-      }
+/* 监听 */
+watch(()=>props.value, (val: any)=>{
+  if(val) {
+    for(let i in seaList.value) {
+      seaList.value[i].checked = val.includes(seaList.value[i].value);
     }
-    this.seaDisplay = n>0;
+    if(seaList.value.length>0) selectData(false);
+  } else {
+    clear();
   }
+},{ deep: true });
+/* 监听 */
+watch(()=>props.options, (val: any)=>{
+  seaList.value = val || [];
+  selectData();
+},{ deep: true });
 
-  /* 选择 */
-  selectClick(k: any, isStatus: boolean=true): void {
-    let labs: Array<any> = [];
-    let vals: Array<any> = [];
-    let data: Array<any> = [];
-    for(let i in this.seaList) {
-      // 多选
-      if(this.multiple){
-        if(i==k) this.seaList[k].checked = !this.seaList[k].checked;
-        if(this.seaList[i].checked) {
-          labs.push(this.seaList[i].label);
-          vals.push(this.seaList[i].value);
-          data.push(this.seaList[i]);
-        }
-      }else{
-        // 单选
-        if(i==k){
-          labs.push(this.seaList[i].label);
-          vals.push(this.seaList[i].value);
-          data.push(this.seaList[i]);
-          this.seaList[i].checked = true;
-        }else{
-          this.seaList[i].checked = false;
-        }
-      }
-    }
-    // 事件
-    this.labelName = labs.join(',');
-    if(isStatus){
-      this.$emit('update:value', vals);
-      this.$emit('data', data);
-    }
-    // 单选隐藏
-    if(!this.multiple){
-      this.show = false;
-    }
-  }
+/* 创建完成 */
+onMounted(()=>{
+  init();
+});
 
-  /* 清空 */
-  clear(): void {
-    this.labelName = '';
-    this.$emit('update:value', '');
-  }
-
+/* 初始化 */
+const init = (): void => {
+  // 失去焦点
+  selectObj = proxy.$refs.formSelect;
+  selectObj.addEventListener('focusout', ()=>{
+    show.value = false;
+  });
+  // 列表数据
+  seaList.value = props.options;
 }
+
+/* 搜索 */
+const seaKey = (key: any): void => {
+  let label: string, n: number=0;
+  const reg =new RegExp(key.toLowerCase());
+  for(let i in seaList.value){
+    label = seaList.value[i].label.toLowerCase();
+    if(reg.test(label)){
+      n++;
+      seaList.value[i].display = true;
+    }else{
+      seaList.value[i].display = false;
+    }
+  }
+  seaDisplay.value = n>0;
+}
+
+/* 选择-点击 */
+const selectClick = (k: any): void => {
+  // 多选
+  if(props.multiple) {
+    // 选择
+    seaList.value[k].checked = seaList.value[k].checked?false:true;
+  } else {
+    // 单选
+    for(let i in seaList.value) {
+      if(i==k) seaList.value[i].checked = seaList.value[k].checked?false:true;
+      else seaList.value[i].checked = false;
+    }
+    // 隐藏
+    show.value = false;
+  }
+  // 数据
+  selectData();
+  // 事件
+  emit('change');
+}
+
+/* 选择-数据 */
+const selectData = (isStatus: boolean=true): void => {
+  let labs: Array<any> = [];
+  let vals: Array<any> = [];
+  let data: Array<any> = [];
+  // 数据
+  for(let i in seaList.value) {
+    if(seaList.value[i].checked) {
+      labs.push(seaList.value[i].label);
+      vals.push(seaList.value[i].value);
+      data.push(seaList.value[i]);
+    }
+  }
+  // 事件
+  labelName.value = labs.join(',');
+  if(isStatus) {
+    emit('update:value', vals);
+    emit('data', data);
+  }
+}
+
+/* 清空 */
+const clear = (): void => {
+  labelName.value = '';
+  emit('update:value', '');
+  for(let v of seaList.value) v.checked=false;
+}
+
 </script>

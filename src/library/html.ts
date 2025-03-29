@@ -1,10 +1,34 @@
 /* Html */
 export default class Html {
 
+  /* 监听-添加 */
+  public static addEvent(name: string, fun: any): void {
+    window.addEventListener(name, fun);
+  }
+
+  /* 监听-移除 */
+  public static removeEvent(name: string, fun: any): void {
+    window.removeEventListener(name, fun);
+  }
+
+  /* 监听容器 */
+  public static observer(target: any, callback: Function, options: MutationObserverInit = {attributes: true, childList: true, subtree: true}): void {
+    let MutationObserver = window.MutationObserver;
+    let obs = new MutationObserver((mutationList)=>{
+      callback(mutationList);
+    });
+    obs.observe(target, options);
+  }
+
+  /* 获取值 */
+  public static getPropertyValue(elt: Element, property:string): string {
+    return getComputedStyle(elt).getPropertyValue('width');
+  }
+
   /* 加载Css和JS */
-  public static load(files: Array<string>, reload: boolean=false, type: string=''): void {
+  public static loadFile(files: Array<string>, reload: boolean=false, type: string=''): void {
     let ext: string[] = [];
-    let isLoad: boolean = false;
+    let isLoad = false;
     for(let file of files){
       // 是否存在
       isLoad = this._isInclude(file, type);
@@ -28,8 +52,7 @@ export default class Html {
       }
     }
   }
-
-  /* 是否存在 */
+  // 是否存在
   private static _isInclude(name: string, type: string=''): boolean {
     let js: boolean = type=='js' || /js$/i.test(name);
     const es=document.getElementsByTagName(js?'script':'link');

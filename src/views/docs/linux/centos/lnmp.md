@@ -16,6 +16,9 @@ systemctl start nginx
     keepalive_timeout 30;
     client_body_buffer_size 2048k;
 
+    # 定义缓存区
+    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
+
     # Gzip压缩
     gzip on;
     gzip_vary on;
@@ -46,6 +49,14 @@ server {
     index index.html;
 
     location / {
+        # 使用缓存
+        proxy_cache my_cache;
+        proxy_cache_valid 200 302 6h;
+        proxy_cache_valid 404 1m;
+        proxy_cache_valid any 1m;
+        expires 30d;
+        # 添加缓存控制头
+        add_header X-Proxy-Cache $upstream_cache_status;
     }
 
     error_page 404 /404.html;
@@ -127,7 +138,7 @@ dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
 #### 2) 安装PHP
 ```bash
 # PHP8
-dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring -y
+dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring php-opcache -y
 # PHP8.3
 dnf install php83-php-fpm php83-php-cli php83-php-mysqlnd php83-php-pdo php83-php-gd php83-php-xml php83-php-mbstring -y
 # 查看模块
@@ -180,6 +191,13 @@ vi /etc/opt/remi/php83/php-fpm.d/www.conf
 #### 进程数
 - pm = static
 - pm.max_children = 256
+#### Opcache
+```bash
+/etc/php.d/10-opcache.ini
+```
+- opcache.enable=1
+- opcache.memory_consumption=2048
+- opcache.max_accelerated_files=10000
 
 #### 6) Session问题
 ```bash
