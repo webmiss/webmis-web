@@ -173,11 +173,19 @@ const menusClick = (tmp: Array<any>): void => {
   // 数据
   for(let v1 of menus.value.nav){
     if(v1.value==tmp[0]){
+      // 展开同级
       v1.checked = true;
       menus.value.list = v1.children;
       for(let v2 of v1.children) {
-        if(v2.value==tmp[1]) addr.value = v1.label+' > '+v2.label;
+        // 选中样式
         v2.checked = v2.value==tmp[1]?true:false;
+        for(let v3 of v2.children) {
+          if(v3.value==tmp[2]) {
+            // 标题、地址栏
+            document.title = v3.label+'-WebMIS('+v1.label+')';
+            addr.value = v1.label+' > '+v2.label+' > '+v3.label;
+          }
+        }
       }
     } else {
       v1.checked = false;
