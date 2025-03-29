@@ -1,0 +1,10 @@
+import{d as o,c as s,a as t,o as r}from"./index-DZw22l5y.js";const c={class:"markdown-body"},l={},g="",h=o({__name:"base64",setup(n,{expose:a}){return a({frontmatter:{},excerpt:void 0}),(d,e)=>(r(),s("div",c,e[0]||(e[0]=[t(`<h2>引入</h2><pre><code class="language-java">import webmis.util.Base64;
+</code></pre><h2>String To Bytes</h2><pre><code class="language-java">Base64.ToByte(String data);
+</code></pre><h2>Bytes To String</h2><pre><code class="language-java">Base64.ToStr(byte[] data);
+</code></pre><h2>编码</h2><pre><code class="language-java">Base64.Encode(byte[] data);
+</code></pre><h2>解码</h2><pre><code class="language-java">Base64.UrlEncode(byte[] data);
+</code></pre><h2>编码(URL)</h2><pre><code class="language-java">Base64.UrlEncode(byte[] data);
+</code></pre><h2>解码(URL)</h2><pre><code class="language-java">Base64.UrlDecode(String data);
+</code></pre><h2>压缩</h2><pre><code class="language-java">Base64.Compress(byte[] data);
+</code></pre><h2>解压</h2><pre><code class="language-java">Base64.UnCompress(byte[] data);
+</code></pre>`,18)])))}});export{h as default,g as excerpt,l as frontmatter};

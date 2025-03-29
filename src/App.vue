@@ -22,7 +22,7 @@
           <div class="app_qrcode_box">
             <div class="app_qrcode_body">
               <div class="arrow arrow_up"></div>
-              <img :src="cfg.apiUrl+'index/qrcode/docs'" />
+              <img :src="new Env().apiUrl+'index/qrcode/docs'" />
               <p>手机扫描二维码</p>
             </div>
           </div>
@@ -44,8 +44,6 @@
         <!-- Search -->
         <div class="app_sea_body">
           <wmInput v-model:value="sea.key" @update:value="seaInput()" height="32px" lineHeight="32px" icon="ui ui_search" padding="0 10px 0 40px" placeholder="请输入关键字"></wmInput>
-          <!-- <i class="ui ui_search"></i> -->
-          <!-- <input type="text" placeholder="请输入关键字" v-model="sea.key" @input="seaInput()" /> -->
         </div>
         <ul class="app_sea_list" v-if="sea.list.length>0">
           <li v-for="(v,k) in sea.list" :class="v.url==pos[1]&&v.value==pos[2]?'active':''" @click="menusClick([pos[0], v.url, v.value])">

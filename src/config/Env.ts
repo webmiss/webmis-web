@@ -7,7 +7,7 @@ export default class Env {
   public static lang: string = 'zh_CN'          // 语言
   public static copy: string = '©'+(new Date()).getFullYear()+' webmis.vip';
   public baseUrl: string = '';                  // 网址
-  public apiUrl: string = 'admin/';             // 接口地址
+  public apiUrl: string = '';                   // 接口地址
   public socketUrl: string = '';                // Socket地址
 
   /* 构造函数 */
