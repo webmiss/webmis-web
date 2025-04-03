@@ -6,28 +6,36 @@ SET GLOBAL innodb_file_per_table = 1;
 SET GLOBAL innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
 
 # MyISAM
+SET GLOBAL key_buffer_size = 8*1024*1024*1024;
+# 缓冲区状态
+show global status like 'Key_%';
+- Key_blocks_unused         # 未使用
+- Key_blocks_used           # 已使用
+- Key_read_requests         # 读取索引的次数
+- Key_reads                 # 从磁盘中读取索引的次数
+- Key_write_requests        # 写入到key buffer(请求数)
+- Key_writes                # 写入到磁盘
+
 SET GLOBAL read_buffer_size = 33554432; 				# 32M
 SET GLOBAL sort_buffer_size = 33554432; 				# 32M
-SET GLOBAL key_buffer_size = 2147483648; 			    # 2G
 SET GLOBAL bulk_insert_buffer_size = 536870912; 		# 512M
 SET GLOBAL myisam_sort_buffer_size = 536870912; 		# 512M
 SET GLOBAL myisam_max_sort_file_size = 549755813888;	# 512G
 
-# 最大连接数: 小网站(100~200)、中型(500~800)、大型(1000~2000)
+# 最大连接数
 SET GLOBAL max_connections = 512;
-# 查询缓存容量
-SET GLOBAL query_cache_type = ON;                       # 开启
-SET GLOBAL query_cache_size = 536870912; 			    # 512M
-SET GLOBAL query_cache_limit = 16777216;		        # 16M
-SET GLOBAL query_cache_min_res_unit = 4096;			    # 4KB
-# 临时表容量和内存表最大容量
-SET GLOBAL tmp_table_size = 8589934592;                 # 8G
-SET GLOBAL max_heap_table_size = 8589934592;            # 8G
-# 检查空闲连接: 建议(90秒/次)
-SET GLOBAL wait_timeout = 90;
-SET GLOBAL interactive_timeout = 90;
-# Got timeout reading communication packets
-SET GLOBAL max_allowed_packet = 536870912; 			    # 512M
+SET GLOBAL thread_cache_size = 256;
+# 连接状态
+show global status like 'Max_used_%';
+- Max_used_connections      # 当前连接数
+# 线程状态
+show global variables like 'Thread_%';
+show global status like 'Thread_%';
+- Threads_cached            # 空余线程数
+- Threads_connected         # 已绑定线程数
+- Threads_created           # 已创建线程数
+- Threads_running           # 正在运行线程数
+
 ```
 
 #### 配置文件( vi /etc/my.cnf.d/mariadb-server.cnf )
@@ -35,9 +43,14 @@ SET GLOBAL max_allowed_packet = 536870912; 			    # 512M
 [mysqld]
 # 禁用DNS反向查询
 skip-name-resolve
+# 检查空闲连接
+wait_timeout = 120
+interactive_timeout = 120
+# 单个查询或数据包最大大小
+max_allowed_packet = 536870912
 # 慢查询
 slow-query-log=ON
-long_query_time=1
+long_query_time=10
 # 日志文件
 server-id=1
 log-bin=mysql-bin
