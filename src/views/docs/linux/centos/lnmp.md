@@ -188,9 +188,10 @@ vi /etc/opt/remi/php83/php-fpm.d/www.conf
 - group = nginx
 - listen = /run/php-fpm/www.sock
 - listen = /var/opt/remi/php83/run/php-fpm/www.sock
-#### 进程数
-- pm = static
-- pm.max_children = 256
+#### 强制定期重启子进程
+- pm.max_requests = 1000                    # 每处理1000请求后重启‌
+- slowlog = /var/log/php-fpm/slow.log
+- request_slowlog_timeout = 10s             # 记录超过10秒的请求‌
 #### Opcache
 ```bash
 /etc/php.d/10-opcache.ini

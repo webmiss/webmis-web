@@ -1,6 +1,0 @@
-import{d as e,c as l,a as n,o as h}from"./index-YZy2HEBW.js";const a={class:"markdown-body"},p={},c="",d=e({__name:"install",setup(i,{expose:o}){return o({frontmatter:{},excerpt:void 0}),(s,t)=>(h(),l("div",a,t[0]||(t[0]=[n(`<h1>Python3开发环境</h1><h2>ArchLinux</h2><h4>1) 安装Git</h4><pre><code class="language-bash">pacman -S git
-</code></pre><h4>2) 安装Python</h4><pre><code class="language-bash">pacman -S python python-pip
-# 查看
-python -V
-</code></pre><br><h2>Windows</h2><h4>1) 安装Git</h4><ul><li>下载: <a href="https://git-scm.com/download/win">Git</a></li><li>安装: 64位版 &gt; 重启系统</li><li>VsCode: “ctrl+\`” &gt; “终端” &gt; “powershell” &gt; “选择默认 shell” &gt; “Git Bash” &gt; 重启</li><li>终端输入: “cmd” 和 “bash” 可相互切换</li></ul><h4>2) 安装Python</h4><ul><li>下载: <a href="https://www.python.org/downloads/">Python</a></li><li>勾选: Add Python 3.x to PATH</li><li>选择: Customize installation</li><li>安装目录: “D:\\server\\python”</li><li>CMD: python -V</li></ul><br><h2>MacOS</h2><h4>1) 安装Git</h4><pre><code class="language-bash">git
-</code></pre><h4>2) 安装Python</h4><ul><li>下载: <a href="https://www.python.org/downloads/">Python</a></li></ul><p><br><br></p>`,19)])))}});export{d as default,c as excerpt,p as frontmatter};
