@@ -1,5 +1,5 @@
 <template>
-  <button class="wm-button" :class="effect+'_'+type"
+  <button class="wm-button flex_center" :class="effect+'_'+type"
     :style="{
       width: width,
       height: height,
@@ -18,11 +18,10 @@
 
 <style lang="less" scoped>
 .wm-button:focus,button:active:focus,button.active:focus,button.focus,button:active.focus,button.active.focus{outline: none; border-color: transparent; box-shadow:none;}
-.wm-button{user-select: none; white-space: nowrap; margin: 0 4px; border: transparent 1px solid; background: none; cursor: pointer; font-size: 14px; text-align: center; box-sizing: border-box; white-space:normal}
+.wm-button{user-select: none; white-space: nowrap; margin: 0 4px; border: transparent 1px solid; background: none; cursor: pointer; font-size: 14px; text-align: center; box-sizing: border-box; white-space: normal;}
 .wm-button:hover{box-shadow: 0 2px 4px rgba(0,0,0,.2);}
 .wm-button:disabled{opacity: 0.5; cursor: not-allowed;}
-.wm-button i{float: left; width: 24px; text-align: center;}
-.wm-button span{float: left;}
+.wm-button i{width: 24px; text-align: center;}
 /* default */
 .wm-button.plain_default{background-color: @LighterFill; color: @Text; border-color: @BaseBorder;}
 .wm-button.plain_default:hover{background-color: @Primary5; color: @Primary; border-color: @Primary;}
