@@ -160,6 +160,15 @@ dnf install php-pear php-devel -y
 # 查看模块
 php -m
 ```
+#### Phalcon
+```bash
+pecl install psr
+pecl install phalcon
+# 配置文件
+vi /etc/php.d/50-phalcon.ini
+```
+- extension=psr
+- extension=phalcon
 #### Swoole
 ```bash
 pecl install swoole

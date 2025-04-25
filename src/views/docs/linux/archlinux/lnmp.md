@@ -73,13 +73,29 @@ listen = /run/php-fpm/php-fpm.sock
 ``` bash
 # Composer
 pacman -S composer
-# Phalcon
-yay -S php-phalcon
+# Pecl
+yay -S php-pear base-devel
+pecl channel-update pecl.php.net
 # Redis
 pacman -S redis php-redis
 ```
+#### Phalcon
+```bash
+pecl install phalcon
+# 配置文件
+vi /etc/php/conf.d/phalcon.ini
+```
 - extension=psr
 - extension=phalcon
+
+#### Swoole
+```bash
+pecl install swoole
+# 配置文件
+vi /etc/php/conf.d/swoole.ini
+```
+- ; Enable swoole extension module
+- extension=swoole
 
 <br/>
 
