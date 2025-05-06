@@ -3,6 +3,11 @@
 ## Nginx
 #### 1) 安装
 ```bash
+# 选择版本
+dnf module list nginx
+dnf module reset nginx
+dnf module enable nginx:1.26
+# 安装
 dnf install nginx -y
 # 开机启动
 systemctl enable nginx
@@ -132,29 +137,33 @@ vi /etc/redis/redis.conf
 ## PHP
 #### 1) 软件仓库
 ```bash
+# 选择版本
+dnf module list php
+dnf module reset php
+dnf module enable php:8.3
+# 其它版本
 dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
+# 查看模块
+dnf module list php
+dnf module reset php
+dnf module enable php:remi-8.4
 ```
 
 #### 2) 安装PHP
 ```bash
 # PHP8
 dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring php-opcache -y
-# PHP8.3
-dnf install php83-php-fpm php83-php-cli php83-php-mysqlnd php83-php-pdo php83-php-gd php83-php-xml php83-php-mbstring -y
 # 查看模块
 php -m
 # 启动
 systemctl enable php-fpm
 systemctl start php-fpm
-systemctl enable php83-php-fpm
-systemctl start php83-php-fpm
 ```
 
 #### 3) 添加扩展
 ```bash
 # Redis
-dnf install php-pecl-redis5 -y
-dnf install php83-php-pecl-redis6 -y
+dnf install php-pecl-redis6 -y
 # Pecl
 dnf install php-pear php-devel -y
 # 查看模块
