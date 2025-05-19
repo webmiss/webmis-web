@@ -28,6 +28,8 @@ yarn install
 yarn dev
 # 打包
 yarn build
+# SSL证书
+openssl req -x509 -newkey rsa:2048 -nodes -keyout ssl/key.pem -out ssl/cert.pem -days 365 -subj "/CN=localhost"
 ```
 
 <br/><br/>
