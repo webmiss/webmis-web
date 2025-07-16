@@ -67,7 +67,8 @@ sysctl -w vm.swappiness=0
 mysql_secure_installation
 
 # 登陆
-mysql -uroot -p
+mariadb -uroot -p
+mariadb -h 服务器IP -uwebmis -p --ssl=false
 
 # 设置新密码
 mysqladmin -u root -password <新密码>
@@ -89,6 +90,10 @@ CREATE USER '<用户名>'@'<localhost>' IDENTIFIED BY '<密码>';
 
 # 添加权限
 GRANT ALL PRIVILEGES ON '<指定数据库>.*' TO '<用户名>'@'<localhost>';
+FLUSH PRIVILEGES;
+
+# 允许Root远程访问( 注释或删除 bind-address = 127.0.0.1 )
+GRANT ALL PRIVILEGES ON webmis.* TO 'webmis'@'%'IDENTIFIED BY '登录密码' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 # 显示所有用户

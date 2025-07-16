@@ -63,7 +63,7 @@ crontab -e
 ``` bash
 #!/bin/bash
 # find / -name '.certbot.lock' -exec rm {} \;
-/usr/local/bin/certbot renew --force-renewal
+/usr/bin/certbot renew --force-renewal
 systemctl reload nginx
 ```
 
