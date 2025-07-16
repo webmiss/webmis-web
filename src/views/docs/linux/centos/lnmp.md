@@ -21,8 +21,15 @@ systemctl start nginx
     keepalive_timeout 30;
     client_body_buffer_size 2048k;
 
-    # 定义缓存区
-    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
+    # 日志-按天
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    map $time_iso8601 $logdate {
+        '~^(?<ymd>\d{4}-\d{2}-\d{2})' $ymd;
+        default 'date-not-found';
+    }
+    access_log  /var/log/nginx/access-$logdate.log  main;
 
     # Gzip压缩
     gzip on;
@@ -32,6 +39,9 @@ systemctl start nginx
     gzip_min_length 1k;
     gzip_http_version 1.1;
     gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/svg+xml image/x-icon;
+
+    # 定义缓存区
+    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
 
     #include /etc/nginx/conf.d/*.conf;
     include /home/vhosts/*.conf;
@@ -78,7 +88,7 @@ server {
 # 创建文件
 mkdir -p /home/www
 echo '<h1>WebMIS</h1>' > /home/www/index.html
-chmod -R 777 /home/www/index.html
+chown -R nginx:nginx /home/www/index.html
 # 重启Nginx
 systemctl restart nginx
 ```
@@ -95,6 +105,10 @@ systemctl reload nginx
 ## MariaDB
 #### 1) 安装
 ```bash
+# 选择版本
+dnf module list mariadb
+dnf module reset mariadb
+dnf module enable mariadb:10.11
 # 安装
 dnf install mariadb mariadb-server -y
 # 开机启动
@@ -107,8 +121,21 @@ netstat -tap | grep mysql
 ```bash
 mysql_secure_installation
 ```
-#### 3) 数据库工具
-- [Adminer](https://github.com/vrana/adminer/releases/)
+- Enter current password for root (enter for none): enter
+- Switch to unix_socket authentication: Y
+- Change the root password?: Y
+- Remove anonymous users?: Y
+- Disallow root login remotely?: Y
+- Remove test database and access to it?: Y
+- Reload privilege tables now?: Y
+
+#### 3) 数据库工具( https://www.adminer.org/en/ )
+```bash
+# 上传到服务器
+scp adminer.php root@webmis.vip:/home/www/
+# 访问权限
+chown -R nginx:nginx /home/www/adminer.php
+```
 
 #### 4) 允许Root远程访问
 ```bash
@@ -122,6 +149,10 @@ flush privileges;
 
 ## Redis
 ```bash
+# 选择版本
+dnf module list redis
+dnf module reset redis
+dnf module enable redis:7
 # 安装
 dnf install redis -y
 # 启动
@@ -129,6 +160,8 @@ systemctl enable redis
 systemctl start redis
 # 远程访问
 vi /etc/redis/redis.conf
+# 重启
+systemctl restart redis
 ```
 - 远程访问: (1)注释 # bind 127.0.0.1  (2)protected-mode no
 - 设置密码: requirepass 新密码
@@ -192,7 +225,6 @@ vi /etc/php.d/50-swoole.ini
 ```bash
 vi /etc/php.ini
 vi /etc/opt/remi/php83/php.ini
-
 ```
 - date.timezone = "Asia/Shanghai"
 - session.save_path = "/tmp"
@@ -220,14 +252,14 @@ vi /etc/opt/remi/php83/php-fpm.d/www.conf
 
 #### 6) Session问题
 ```bash
-chmod -R 777 /var/lib/php/session
-chmod -R 777 /var/opt/remi/php83/lib/php/session
+chown -R nginx:nginx /var/lib/php/session
+chown -R nginx:nginx /var/opt/remi/php83/lib/php/session
 ```
 
 #### 7) 探针
 ```bash
 echo '<?php phpinfo(); ?>' > /home/www/phpinfo.php
-chmod -R 774 /home/www/phpinfo.php
+chown -R nginx:nginx /home/www/phpinfo.php
 ```
 
 #### 8) Nginx调用PHP-FPM

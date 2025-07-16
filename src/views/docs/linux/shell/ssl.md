@@ -25,12 +25,16 @@ server {
 
     location / {
         try_files $uri $uri/ /index.html;
+        # cache
+        proxy_cache my_cache;
+        proxy_cache_valid 200 302 6h;
+        proxy_cache_valid 404 1m;
+        proxy_cache_valid any 1m;
+        expires 30d;
+        add_header X-Proxy-Cache $upstream_cache_status;
     }
-    error_page 404 /404.html;
-    location = /40x.html {
-    }
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html {
+    location ~ /\.ht {
+        deny  all;
     }
 }
 ```

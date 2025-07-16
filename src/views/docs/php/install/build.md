@@ -3,7 +3,7 @@
 ## Composer
 ```bash
 # PHP命令
-ln -s /usr/bin/php74 /usr/bin/php
+ln -s /usr/bin/php8.3 /usr/bin/php
 # 安装
 apt install composer
 ```

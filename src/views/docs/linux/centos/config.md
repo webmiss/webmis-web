@@ -2,7 +2,16 @@
 ```bash
 # Epel源
 dnf install epel-release -y
-# PHP8
+# Epel-阿里源
+sed -i \
+  -e 's!^metalink=!#metalink=!g' \
+  -e 's!^#baseurl=!baseurl=!g' \
+  -e 's!https\?://download\.fedoraproject\.org/pub/epel!https://mirrors.aliyun.com/epel!g' \
+  -e 's!https\?://download\.example/pub/epel!https://mirrors.aliyun.com/epel!g' \
+  /etc/yum.repos.d/epel*.repo
+# 更新缓存
+dnf clean all && sudo dnf makecache
+# Remi源
 dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
 ```
 
@@ -70,6 +79,7 @@ firewall-cmd --reload
 
 #### 1) 服务
 ```bash
+firewall-cmd --add-service={http,https,mysql} --permanent
 # 允许
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-service=https
