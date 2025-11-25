@@ -355,6 +355,47 @@ myisamchk -r xxx.MYI
 systemctl start mariadb
 ```
 
+### 8) 数据文件备份脚本
+``` bash
+#!/bin/bash
+path=/var/lib/mysql/webmis/
+target=/home/db/webmis/
+remote_host=root@webmis.vip:/home/db/webmis/
+remote_passwd=服务器登录密码
+
+# 文件列表
+for tmp in $path*; do
+  # 文件信息
+  ct=$(md5sum $tmp)
+  md5=$(echo $ct | cut -d " " -f 1)
+  ff=$(echo $ct | cut -d " " -f 2)
+  name=$(echo $ff | cut -d "/" -f 6)
+  file="$target$name"
+  # 是否存在
+  if [[ ! -f $file ]]; then
+    cp $ff $target
+    echo "[ New ] $file"
+  fi
+  # 是否更新
+  tmp_md5=$(md5sum $file | cut -d " " -f 1)
+  if [[ "$md5" = "$tmp_md5" ]]; then
+    echo "[ MD5 ] $tmp_md5 $md5 $file"
+  else
+     # 备份文件
+    cp $ff $target
+    echo "[ Backup ] $tmp_md5 $md5 $file"
+    # 远程备份
+    stime=$(date "+%Y-%m-%d %H:%M:%S")
+    size=$(du -sh $file | cut -d $'\t' -f 1)
+    echo "Upload: $stime  Size: $size"
+    sshpass -p $remote_passwd rsync -avz --info=progress2 $file $remote_host
+    etime=$(date "+%Y-%m-%d %H:%M:%S")
+    echo -e "Finish: $etime"
+  fi
+done
+
+```
+
 ## SSH免密码登录
 ### 方法一：
 ``` bash
