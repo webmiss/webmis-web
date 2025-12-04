@@ -47,7 +47,7 @@ long_query_time=10
 # 日志文件
 server-id=1
 log-bin=mysql-bin
-binlog-format=Row
+binlog_format=ROW
 expire_logs_days=7
 ```
 
@@ -302,7 +302,7 @@ DELETE FROM `user` WHERE id=1;
 ``` bash
 vi /home/mysql.sh
 ```
-### 1) MySQL备份
+### 1) MySQL全量备份
 ``` bash
 #!/bin/bash
 uname=root
@@ -311,6 +311,26 @@ dbname=***
 path=***_`date '+%Y-%m-%d'`.sql
 mysqldump -u$uname -p$passwd --databases $dbname --lock-all-tables --flush-logs > $path
 ```
+*** 增量备份（开启Binlog） ***
+``` bash
+#!/bin/bash
+uname=root
+passwd=***
+path=/var/lib/mysql/
+day=$(date +%Y-%m-%d)
+file="/home/db/webmis/mysql-bin-$day.log"
+remote_host=root@webmis.vip:/home/db/webmis/
+remote_passwd=服务器登录密码
+# 关闭当前 Binlog 并打开新文件
+mariadb -u$uname -p$passwd -e "FLUSH LOGS;"
+# 重命名
+name=$(ls -1t "$path"mysql-bin.* | head -n1 | awk -F'/' '{print $NF}')
+# 备份文件
+mv "$path$name" $file
+# 异地备份
+sshpass -p $remote_passwd rsync -avz --info=progress2 $file $remote_host
+```
+
 ### 2) MySQL恢复
 ``` bash
 #!/bin/bash
@@ -375,6 +395,7 @@ for tmp in $path*; do
   if [[ ! -f $file ]]; then
     cp $ff $target
     echo "[ New ] $file"
+    sshpass -p $remote_passwd rsync -avz --info=progress2 $file $remote_host
   fi
   # 是否更新
   tmp_md5=$(md5sum $file | cut -d " " -f 1)
