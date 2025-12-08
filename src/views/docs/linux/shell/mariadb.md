@@ -36,15 +36,15 @@ show global status like 'Thread_%';
 [mysqld]
 # 禁用DNS反向查询
 skip-name-resolve
-# 检查空闲连接
-wait_timeout = 120
-interactive_timeout = 120
+# 检查空闲连接(每小时)
+wait_timeout = 3600
+interactive_timeout = 3600
 # 单个查询或数据包最大大小
 max_allowed_packet = 536870912
 # 慢查询
 slow-query-log=ON
 long_query_time=10
-# 日志文件
+# 日志文件(保留7天)
 server-id=1
 log-bin=mysql-bin
 binlog_format=ROW

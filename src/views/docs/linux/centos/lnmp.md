@@ -42,6 +42,10 @@ systemctl start nginx
 
     # 定义缓存区
     proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
+    fastcgi_buffer_size 512k;  # 增加单个缓冲区大小
+    fastcgi_buffers 8 512k;    # 增加缓冲区数量和大小
+    fastcgi_busy_buffers_size 1024k;  # 增加繁忙缓冲区大小
+    fastcgi_temp_file_write_size 512k;  # 增加临时文件写入大小
 
     #include /etc/nginx/conf.d/*.conf;
     include /home/vhosts/*.conf;
