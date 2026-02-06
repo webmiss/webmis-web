@@ -1,5 +1,5 @@
 # WebMIS-Phalcon
-采用PHP7+Laveral、Phalcon5开发，包括HMVC模块化管理、自动路由、CLI命令行、Socket通信、redis缓存、Token机制等功能，提供支付宝、微信、文件上传、图像处理、二维码等常用类。
+采用PHP8 + Redis开发的轻量级HMVC基础框架，目录结构清晰，支持CLI方式访问资料方便执行定时脚本。包括HMVC模块化管理、自动路由、CLI命令行、Socket通信、redis缓存、Token机制等功能，提供支付宝、微信、文件上传、图像处理、二维码等常用类。
 
 **PHP**
 - 网站-API( [https://php.webmis.vip/](https://php.webmis.vip/) )

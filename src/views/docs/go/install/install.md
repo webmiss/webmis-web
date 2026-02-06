@@ -13,29 +13,21 @@ pacman -S go
 go version
 ```
 
-#### 3) 国内镜像
+#### 3) 配置( vim ~/.bashrc )
 ```bash
+# Go 环境变量配置
+export GOPATH=$HOME/go
 export GO111MODULE=on
-export GOPROXY=https://goproxy.cn
-
-go env -w GOPROXY=https://goproxy.cn
+export GOPROXY=https://goproxy.cn,direct
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 ```
+- 生效: source ~/.bashrc
+- 验证: go env GOPATH GO111MODULE GOPROXY GOBIN
 
 #### 4) 热启动
 ```bash
-# golang.org/x 超时问题
-mkdir -p $GOPATH/src/golang.org/x
-cd $GOPATH/src/golang.org/x
-git clone https://github.com/golang/net.git
-git clone https://github.com/golang/sys.git
-git clone https://github.com/golang/text.git
-git clone https://github.com/golang/tools.git
-# 工具
-go get github.com/pilu/fresh
-# 链接
-ln -s $GOPATH/bin/fresh /usr/bin/
-# 运行
-fresh
+go install github.com/air-verse/air@latest
 ```
 
 ## Windows

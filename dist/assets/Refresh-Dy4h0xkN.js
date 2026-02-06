@@ -1,0 +1,1 @@
+import{_ as n}from"./components-CwNiqiyd.js";import{d as s}from"./vendor-BCPY0tYI.js";const p=s({beforeRouteEnter(r,e,t){t(o=>{o.$router.replace(e.path)})},mounted(){}});function a(r,e,t,o,c,f){return null}const d=n(p,[["render",a]]);export{d as default};
