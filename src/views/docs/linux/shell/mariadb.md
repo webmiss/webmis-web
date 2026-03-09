@@ -330,7 +330,7 @@ file="/home/db/erp/mysql-bin-$day.log"
 # 重启Binlog
 mariadb -u$uname -p$passwd -e "FLUSH LOGS;"
 # 获日志文件
-name=$(ls -1t "$path"mysql-bin.* | head -n2 | tail -n1 | awk -F'/' '{print $NF}')
+name=$(ls -1t "$path"mysql-bin.* | awk 'NR==2' | awk -F'/' '{print $NF}')
 # 备份文件
 cp $path$name $file
 # 异地备份
