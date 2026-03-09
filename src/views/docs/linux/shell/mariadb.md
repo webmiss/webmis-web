@@ -313,7 +313,7 @@ path=***_`date '+%Y-%m-%d'`.sql
 # 备份
 mysqldump -u$uname -p$passwd --databases $dbname --lock-all-tables --flush-logs > $path
 ```
-*** 增量备份（开启Binlog） ***
+*** 增量备份（vi /home/mysql_binlog.sh） ***
 ``` bash
 #!/bin/bash
 # 配置
@@ -324,19 +324,17 @@ remote_host=Administrator@IP:E:/db/cszb/log/
 remote_port=2222
 remote_passwd=******
 # 备份目录
-day=$(date +%Y-%m-%d)
+day=$(date -d "yesterday" +%Y-%m-%d)
 file="/home/db/erp/mysql-bin-$day.log"
-previous_day=$(date -d "yesterday" +%Y-%m-%d)
-previous_file="/home/db/erp/mysql-bin-$previous_day.log"
 
-# 关闭当前 Binlog 并打开新文件
+# 重启Binlog
 mariadb -u$uname -p$passwd -e "FLUSH LOGS;"
-# 重命名
-name=$(ls -1t "$path"mysql-bin.* | head -n1 | awk -F'/' '{print $NF}')
+# 获日志文件
+name=$(ls -1t "$path"mysql-bin.* | head -n2 | tail -n1 | awk -F'/' '{print $NF}')
 # 备份文件
-mv $path$name $file
+cp $path$name $file
 # 异地备份
-sshpass -p "$remote_passwd" scp -P $remote_port $previous_file $remote_host
+sshpass -p "$remote_passwd" scp -P $remote_port $file $remote_host
 ```
 
 ### 2) MySQL恢复(全量)

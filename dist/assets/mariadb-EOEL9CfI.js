@@ -1,4 +1,4 @@
-import{d as t,c as a,H as s,o}from"./vendor-BCPY0tYI.js";const l={class:"markdown-body"},i={},u="",c=t({__name:"mariadb",setup(r,{expose:n}){return n({frontmatter:{},excerpt:void 0}),(d,e)=>(o(),a("div",l,e[0]||(e[0]=[s(`<h2>优化( mysql -uroot -p )</h2><pre><code class="language-bash"># 开启表InnoDB: 1开启、0关闭
+import{d as t,c as a,H as s,o}from"./vendor-BCPY0tYI.js";const l={class:"markdown-body"},c={},i="",u=t({__name:"mariadb",setup(r,{expose:n}){return n({frontmatter:{},excerpt:void 0}),(d,e)=>(o(),a("div",l,e[0]||(e[0]=[s(`<h2>优化( mysql -uroot -p )</h2><pre><code class="language-bash"># 开启表InnoDB: 1开启、0关闭
 SET GLOBAL innodb_file_per_table = 1;
 # 缓冲池(kb): 查询专用(物理内存*75%)、默认(134217728=128M)
 SET GLOBAL innodb_buffer_pool_size = 8*1024*1024*1024*0.75;
@@ -257,7 +257,7 @@ dbname=***
 path=***_\`date &#39;+%Y-%m-%d&#39;\`.sql
 # 备份
 mysqldump -u$uname -p$passwd --databases $dbname --lock-all-tables --flush-logs &gt; $path
-</code></pre><p>*** 增量备份（开启Binlog） ***</p><pre><code class="language-bash">#!/bin/bash
+</code></pre><p>*** 增量备份（vi /home/mysql_binlog.sh） ***</p><pre><code class="language-bash">#!/bin/bash
 # 配置
 uname=root
 passwd=******
@@ -266,19 +266,17 @@ remote_host=Administrator@IP:E:/db/cszb/log/
 remote_port=2222
 remote_passwd=******
 # 备份目录
-day=$(date +%Y-%m-%d)
+day=$(date -d &quot;yesterday&quot; +%Y-%m-%d)
 file=&quot;/home/db/erp/mysql-bin-$day.log&quot;
-previous_day=$(date -d &quot;yesterday&quot; +%Y-%m-%d)
-previous_file=&quot;/home/db/erp/mysql-bin-$previous_day.log&quot;
 
-# 关闭当前 Binlog 并打开新文件
+# 重启Binlog
 mariadb -u$uname -p$passwd -e &quot;FLUSH LOGS;&quot;
-# 重命名
-name=$(ls -1t &quot;$path&quot;mysql-bin.* | head -n1 | awk -F&#39;/&#39; &#39;{print $NF}&#39;)
+# 获日志文件
+name=$(ls -1t &quot;$path&quot;mysql-bin.* | head -n2 | tail -n1 | awk -F&#39;/&#39; &#39;{print $NF}&#39;)
 # 备份文件
-mv $path$name $file
+cp $path$name $file
 # 异地备份
-sshpass -p &quot;$remote_passwd&quot; scp -P $remote_port $previous_file $remote_host
+sshpass -p &quot;$remote_passwd&quot; scp -P $remote_port $file $remote_host
 </code></pre><h3>2) MySQL恢复(全量)</h3><pre><code class="language-bash">#!/bin/bash
 mysql -u$uname -p$passwd $dbname &lt; $path
 </code></pre><h3>3) 定时执行(增量)</h3><pre><code class="language-bash"># 添加定时
@@ -343,4 +341,4 @@ ssh-keygen -t rsa
 scp ~/.ssh/id_rsa.pub root@IP:~/.ssh/authorized_keys
 </code></pre><h3>方法二：</h3><pre><code class="language-bash">pacman -S sshpass
 sshpass -p &#39;你的密码&#39; ssh root@IP
-</code></pre>`,51)])))}});export{c as default,u as excerpt,i as frontmatter};
+</code></pre>`,51)])))}});export{u as default,i as excerpt,c as frontmatter};

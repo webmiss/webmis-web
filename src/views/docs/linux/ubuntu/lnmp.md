@@ -10,11 +10,52 @@ systemctl status nginx
 ```
 #### 2) 配置 ( vi /etc/nginx/nginx.conf )
 ```nginx
+user www-data
+worker_processes auto;                  # CPU核心数
+worker_rlimit_nofile 65535;             # 最大打开文件数
 
-    user www-data
+events {
+    worker_connections  10240;          # 最大连接数
+    use epoll;                          # Linux专属，并发性能提升数倍
+    multi_accept on;                    # 一次性接收所有新连接，减少连接等待
+}
 
-    keepalive_timeout 30;
-    client_body_buffer_size 2048k;
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    client_body_buffer_size 20M;        # 内存缓冲区大小
+    client_max_body_size 50M;           # 允许上传文件大小
+
+    # 开启长连接
+    keepalive_timeout 75;               # 长连接保持65秒
+    keepalive_requests 10000;           # 单个长连接最多处理10000个请求
+    tcp_nodelay on;                     # 关闭Nagle算法，减少TCP延迟
+    tcp_nopush on;                      # 合并TCP包发送，提升传输效率
+
+    # 提升HTTPS握手速度
+    ssl_session_cache shared:SSL:10m;   # 开启SSL会话缓存
+    ssl_session_timeout 10m;            # SSL会话缓存有效期
+    ssl_protocols TLSv1.3 TLSv1.2;      # 只保留高性能的TLS协议，禁用低版本
+    ssl_prefer_server_ciphers on;       # 优先使用服务器端加密套件，提升握手效率
+    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+
+    # 限制请求队列，避免过载
+    client_header_timeout 10s;
+    client_body_timeout 10s;
+    send_timeout 10s;
+
+    # 定义缓存区
+    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
+    fastcgi_buffer_size 512k;           # 增加单个缓冲区大小
+    fastcgi_buffers 8 512k;             # 增加缓冲区数量和大小
+    fastcgi_busy_buffers_size 1024k;    # 增加繁忙缓冲区大小
+    fastcgi_temp_file_write_size 512k;  # 增加临时文件写入大小
+
+    # 优化Nginx处理性能，减少阻塞
+    sendfile        on;
+    gzip  on;                           # 开启gzip压缩
+    gzip_min_length 10;
+    gzip_types text/plain text/css text/javascript application/json application/xml application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/svg+xml image/x-icon;
 
     # 日志-按天
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
@@ -26,22 +67,35 @@ systemctl status nginx
     }
     access_log  /var/log/nginx/access-$logdate.log  main;
 
-    # Gzip压缩
-    gzip on;
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 6;
-    gzip_buffers 16 8k;
-    gzip_min_length 1k;
-    gzip_http_version 1.1;
-    gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/x-icon;
-
-    # 定义缓存区
-    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;
-
+    # 配置文件
     #include /etc/nginx/conf.d/*.conf;
     include /home/vhosts/*.conf;
+}
 ```
+*** 追加内容( vi /etc/sysctl.conf ) ***
+```bash
+# 提升系统最大打开文件数
+fs.file-max = 655350
+fs.nr_open = 655350
+
+# TCP连接优化-核心解决TIME_WAIT堆积、端口不足
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 0
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.ip_local_port_range = 1024 65535
+
+# TCP队列优化-解决连接排队阻塞
+net.ipv4.tcp_max_syn_backlog = 16384
+net.core.somaxconn = 16384
+net.core.netdev_max_backlog = 16384
+
+# 内存优化-提升TCP缓存
+net.core.rmem_default = 262144
+net.core.wmem_default = 262144
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+```
+- 立即生效: sysctl -p 
 
 #### 3) 虚拟主机
 ```bash

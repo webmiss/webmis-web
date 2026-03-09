@@ -1,14 +1,8 @@
-import{d as s,c as t,H as a,o}from"./vendor-BCPY0tYI.js";const l={class:"markdown-body"},c={},h="",d=s({__name:"lnmp",setup(i,{expose:n}){return n({frontmatter:{},excerpt:void 0}),(p,e)=>(o(),t("div",l,e[0]||(e[0]=[a(`<h1>LNMP 环境搭建</h1><h2>Nginx</h2><h4>1) 安装</h4><pre><code class="language-bash"># 选择版本
-dnf module list nginx
-dnf module reset nginx
-dnf module enable nginx:1.26
-# 安装
-dnf install nginx -y
-# 开机启动
-systemctl enable nginx
-systemctl start nginx
-</code></pre><h4>2) 配置 ( vi /etc/nginx/nginx.conf )</h4><pre><code class="language-nginx">
-user root;                              # 系统用户
+import{d as t,c as s,H as a,o}from"./vendor-BCPY0tYI.js";const i={class:"markdown-body"},c={},h="",d=t({__name:"lnmp",setup(l,{expose:n}){return n({frontmatter:{},excerpt:void 0}),(p,e)=>(o(),s("div",i,e[0]||(e[0]=[a(`<h1>LNMP 环境搭建</h1><h2>Nginx</h2><h4>1) 安装</h4><pre><code class="language-bash">apt install nginx -y
+apt autoremove -y
+# 查看
+systemctl status nginx
+</code></pre><h4>2) 配置 ( vi /etc/nginx/nginx.conf )</h4><pre><code class="language-nginx">user www-data
 worker_processes auto;                  # CPU核心数
 worker_rlimit_nofile 65535;             # 最大打开文件数
 
@@ -26,7 +20,7 @@ http {
 
     # 开启长连接
     keepalive_timeout 75;               # 长连接保持65秒
-    keepalive_requests 1000;            # 单个长连接最多处理1000个请求
+    keepalive_requests 10000;           # 单个长连接最多处理10000个请求
     tcp_nodelay on;                     # 关闭Nagle算法，减少TCP延迟
     tcp_nopush on;                      # 合并TCP包发送，提升传输效率
 
@@ -118,25 +112,16 @@ vi /home/vhosts/default.conf
     location = /50x.html {
     }
 }
-</code></pre><h4>4) 测试( <a href="http://IP/index.html">http://IP/index.html</a> )</h4><pre><code class="language-bash"># 创建文件
+</code></pre><h4>4) 测试</h4><pre><code class="language-bash"># 创建文件
 mkdir -p /home/www
 echo &#39;&lt;h1&gt;WebMIS&lt;/h1&gt;&#39; &gt; /home/www/index.html
-chown -R nginx:nginx /home/www/index.html
+chown -R www-data:www-data /home/www/index.html
 # 重启Nginx
 systemctl restart nginx
-</code></pre><h4>5) Nginx 系统环境变量( vi /etc/nginx/fastcgi_params )</h4><pre><code class="language-bash">fastcgi_param   OSS_ACCESS_KEY_ID       xxx;
-fastcgi_param   OSS_ACCESS_KEY_SECRET   xxx;
-# 重启服务
-systemctl reload nginx
-</code></pre><br><h2>MariaDB</h2><h4>1) 安装</h4><pre><code class="language-bash"># 选择版本
-dnf module list mariadb
-dnf module reset mariadb
-dnf module enable mariadb:10.11
-# 安装
-dnf install mariadb mariadb-server -y
-# 开机启动
-systemctl enable mariadb
-systemctl start mariadb
+</code></pre><ul><li>预览: <a href="http://IP/index.html">http://IP/index.html</a></li></ul><h2>MariaDB</h2><h4>1) 安装</h4><pre><code class="language-bash"># 安装
+apt install mariadb-server -y
+# 查看
+systemctl status mariadb
 # 查看运行
 netstat -tap | grep mysql
 </code></pre><h4>2) 设置密码</h4><pre><code class="language-bash">mysql_secure_installation
@@ -150,65 +135,39 @@ mysql -uroot -p
 GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39;IDENTIFIED BY &#39;登录密码&#39; WITH GRANT OPTION;
 # 刷新
 flush privileges;
-</code></pre><h2>Redis</h2><pre><code class="language-bash"># 选择版本
-dnf module list redis
-dnf module reset redis
-dnf module enable redis:7
-# 安装
-dnf install redis -y
-# 启动
-systemctl enable redis
-systemctl start redis
+# 查看
+select user,host,password from mysql.user;
+# 修改配置
+vi /etc/mysql/mariadb.conf.d/50-server.cnf
+</code></pre><ul><li>修改&quot;bind-address = 0.0.0.0&quot;</li><li>重启服务&quot;systemctl restart mariadb&quot;</li></ul><h2>Redis</h2><pre><code class="language-bash"># 安装
+apt install redis-server -y
+# 查看
+systemctl status redis
 # 远程访问
 vi /etc/redis/redis.conf
 # 重启
 systemctl restart redis
-</code></pre><ul><li>远程访问: (1)注释 # bind 127.0.0.1 (2)protected-mode no</li><li>设置密码: requirepass 新密码</li></ul><h2>PHP</h2><h4>1) 软件仓库</h4><pre><code class="language-bash"># 选择版本
-dnf module list php
-dnf module reset php
-dnf module enable php:8.3
-# 其它版本
-dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y
-# 查看模块
-dnf module list php
-dnf module reset php
-dnf module enable php:remi-8.4
-</code></pre><h4>2) 安装PHP</h4><pre><code class="language-bash"># PHP8
-dnf install php-fpm php-cli php-mysqlnd php-pdo php-gd php-xml php-mbstring php-opcache -y
-# 查看模块
-php -m
-# 启动
-systemctl enable php-fpm
-systemctl start php-fpm
-</code></pre><h4>3) 添加扩展</h4><pre><code class="language-bash"># Redis
-dnf install php-pecl-redis6 -y
-# Pecl
-dnf install php-pear php-devel -y
-# 查看模块
-php -m
-</code></pre><h4>Phalcon</h4><pre><code class="language-bash">pecl install psr
-pecl install phalcon
-# 配置文件
-vi /etc/php.d/50-phalcon.ini
-</code></pre><ul><li>extension=psr</li><li>extension=phalcon</li></ul><h4>Swoole</h4><pre><code class="language-bash">pecl install swoole
-# 配置文件
-vi /etc/php.d/50-swoole.ini
-</code></pre><ul><li>; Enable swoole extension module</li><li>extension = swoole.so</li></ul><h4>4) PHP配置</h4><pre><code class="language-bash">vi /etc/php.ini
-vi /etc/opt/remi/php83/php.ini
-</code></pre><ul><li>date.timezone = “Asia/Shanghai”</li><li>session.save_path = “/tmp”</li></ul><h4>5) PHP-FPM配置</h4><pre><code class="language-bash">vi /etc/php-fpm.d/www.conf
-vi /etc/opt/remi/php83/php-fpm.d/www.conf
-</code></pre><ul><li>user = nginx</li><li>group = nginx</li><li>listen = /run/php-fpm/www.sock</li><li>listen = /var/opt/remi/php83/run/php-fpm/www.sock</li></ul><h4>强制定期重启子进程</h4><ul><li>pm.max_requests = 1000 # 每处理1000请求后重启‌</li><li>slowlog = /var/log/php-fpm/slow.log</li><li>request_slowlog_timeout = 10s # 记录超过10秒的请求‌</li></ul><h4>Opcache</h4><pre><code class="language-bash">/etc/php.d/10-opcache.ini
-</code></pre><ul><li>opcache.enable=1</li><li>opcache.memory_consumption=2048</li><li>opcache.max_accelerated_files=10000</li></ul><h4>6) Session问题</h4><pre><code class="language-bash">chown -R nginx:nginx /var/lib/php/session
-chown -R nginx:nginx /var/opt/remi/php83/lib/php/session
+</code></pre><ul><li>远程访问: (1)注释 # bind 127.0.0.1 (2)protected-mode no</li><li>设置密码: requirepass 新密码</li></ul><h2>PHP</h2><h4>1) 安装PHP8</h4><pre><code class="language-bash"># 安装PHP8.3
+apt install php-fpm php-cli php-mysql php-gd php-xml php-mbstring -y
+# 安装Composer
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+</code></pre><h4>2) 添加扩展</h4><pre><code class="language-bash"># Redis
+sudo apt install php-redis
+
+# Phalcon
+curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
+apt install php-psr php8.3-phalcon -y
+</code></pre><h4>3) PHP配置</h4><pre><code class="language-bash">vi /etc/php/8.3/fpm/php.ini
+</code></pre><ul><li>date.timezone = “Asia/Shanghai”</li><li>session.save_path = “/tmp”</li><li></li></ul><h4>4) PHP-FPM配置</h4><pre><code class="language-bash">vi /etc/php/8.3/fpm/pool.d/www.conf
+</code></pre><ul><li>user = www-data</li><li>group = www-data</li><li>listen = /run/php/php8.3-fpm.sock</li></ul><h4>5) Session问题</h4><pre><code class="language-bash">chmod -R 777 /var/lib/php/sessions
 </code></pre><h4>7) 探针</h4><pre><code class="language-bash">echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; /home/www/phpinfo.php
-chown -R nginx:nginx /home/www/phpinfo.php
+chown -R www-data:www-data /home/www/phpinfo.php
 </code></pre><h4>8) Nginx调用PHP-FPM</h4><p>vi /home/vhosts/default.conf</p><pre><code class="language-bash">    # PHP-FPM
     location ~ \\.php$ {
-        #fastcgi_pass   127.0.0.1:9000;
-        fastcgi_pass   unix:/run/php-fpm/www.sock;
-        #fastcgi_pass   unix:/var/opt/remi/php83/run/php-fpm/www.sock;
+        fastcgi_pass   unix:/run/php/php8.3-fpm.sock;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         include        fastcgi_params;
     }
 </code></pre><p><strong>重启</strong></p><pre><code class="language-bash">systemctl restart nginx
-</code></pre><p><br><br></p>`,65)])))}});export{d as default,h as excerpt,c as frontmatter};
+</code></pre>`,50)])))}});export{d as default,h as excerpt,c as frontmatter};
