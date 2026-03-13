@@ -64,6 +64,7 @@ http {
     gzip_types text/plain text/css text/javascript application/json application/xml application/javascript application/octet-stream application/pdf image/gif image/jpeg image/png image/svg+xml image/x-icon;
 
     # 日志-按天
+    map $host $root_path {default "";}
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
