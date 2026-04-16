@@ -1,92 +1,62 @@
-# 服务器环境
+# 生产环境
 
-## 安装Go
+### Ubuntu
 ```bash
-# CentOS
-dnf install golang -y
-# Ubunut
-apt install golang -y
-# 查看版本
-go version
-```
-
-## 运行
-```bash
-# 进入项目
-cd /xxx/gin
-mkdir public/upload
-chmod -R 777 public/upload
-# 安装依赖包
-./bash install
+# 安装 Golang
+apt install golang-go -y
 # 打包
 ./bash build
-# 启动
+# 运行
 ./bash start
 ```
 
-## 开机启动
+### 交换分区( 编译时内存不足 )
 ```bash
-# 权限
-chmod +x /etc/rc.d/rc.local
-# 编辑文件
-vi /etc/rc.d/rc.local
+# 创建文件
+fallocate -l 4G /swapfile
+# 设置权限
+chmod 600 /swapfile
+# 格式化
+mkswap /swapfile
+# 启用
+swapon /swapfile
+# 优化
+echo 'vm.swappiness=10' >> /etc/sysctl.conf
+sysctl -p
+# 查看交换空间信息
+free -m
 ```
-- cd /xxx/java/ && ./bash start
+- 开机启动: 编辑 /etc/fstab 文件，添加内容: /swapfile none swap sw 0 0
 
-<br/>
-
-## Nginx虚拟主机
-``` nginx
-upstream go {
-    server localhost:9030;
+### Nginx
+```bash
+upstream java {
+    server localhost:9020;
 }
-upstream go_websocket {
-    server localhost:9031;
-}
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
-
 server {
-    listen       80;
-    listen       [::]:80;
-    server_name  go.webmis.vip;
-    set $root_path /home/www/base/gin/public;
+    server_name  java.webmis.vip;
+    set $root_path /home/www/webmis/java/public;
     root $root_path;
     index index.html;
 
-    charset utf-8;
-
     location / {
+        proxy_pass http://java;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://go;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
-
     location ~* ^/(upload|favicon.png)/(.+)$ {
         root $root_path;
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+        add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization';
+        if ($request_method = 'OPTIONS') { return 204; }
     }
-
-    location /wss {
-        proxy_pass http://go_websocket;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Connection "keep-alive";
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
 }
 ```
 
-## SSL证书
+### SSL证书
 ```bash
 certbot --nginx
 ```
-
-<br/><br/>

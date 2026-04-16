@@ -4,10 +4,17 @@ export default class Menus {
   /* 全部 */
   public static all(): Array<any> {
     return [
+
+      /* TryERP */
+      {label:'TryERP', value:'erp', children:[
+        {label:'使用手册', value:'install', children:[
+          {label: '接入说明', value: 'index', key:'接入说明'},
+        ]},
+      ]},
+
       /* Vue */
       {label:'Vue', value:'vue', children:[
         {label:'Vue项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
           {label: '字体图标', value: 'icons', key:'ui,字体图标'},
@@ -63,184 +70,187 @@ export default class Menus {
         // ]},
       ]},
 
-      /* Flutter */
-      {label:'Flutter', value:'flutter', children:[
-        {label:'Flutter项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
-          {label: '安装&运行', value: 'index', key:'安装&运行'},
-          {label: '打包&发布', value: 'build', key:'打包&发布'},
-        ]},
-      ]},
-
       /* PHP */
       {label:'PHP', value:'php', children:[
         {label:'PHP项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
+          {label: '项目结构', value: 'object', key:'项目结构'},
         ]},
-        {label:'Service 服务', value:'service', children:[
-          {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
-          {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
-          {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
-          {label: '验证 Token', value: 'token', key:'token'},
-          {label: '通信 Socket', value: 'socket', key:'socket'},
+        {label:'Core 公共', value:'core', children:[
+          {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
         ]},
-        {label:'ORM 数据库', value:'db', children:[
-          {label: '模型 Model', value: 'model', key:'orm,model,模型'},
-          {label: '查询 Select', value: 'select', key:'orm,select,查询'},
-          {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
-          {label: '更新 Update', value: 'update', key:'orm,update,更新'},
-          {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
-          {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
-          {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
-        ]},
-        {label:'Library 类库', value:'library', children:[
-          {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
-          {label: '导出 Export', value: 'export', key:'export,导出,excel'},
-          {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
-          {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
-          {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
-          {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
-          {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
+        // {label:'Service 服务', value:'service', children:[
+        //   {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
+        //   {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
+        //   {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
+        //   {label: '验证 Token', value: 'token', key:'token'},
+        //   {label: '通信 Socket', value: 'socket', key:'socket'},
+        // ]},
+        // {label:'ORM 数据库', value:'db', children:[
+        //   {label: '模型 Model', value: 'model', key:'orm,model,模型'},
+        //   {label: '查询 Select', value: 'select', key:'orm,select,查询'},
+        //   {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
+        //   {label: '更新 Update', value: 'update', key:'orm,update,更新'},
+        //   {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
+        //   {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
+        //   {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
+        // ]},
+        // {label:'Library 类库', value:'library', children:[
+        //   {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
+        //   {label: '导出 Export', value: 'export', key:'export,导出,excel'},
+        //   {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
+        //   {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
+        //   {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
+        //   {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
+        //   {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
           
-        ]},
-        {label:'Util 工具', value:'util', children:[
-          {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,strtotime日期转时间戳,gmt时间格式,json转换,url参数'},
-          {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
-          {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
-          {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,bytes'},
-          {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
-          {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
-        ]},
+        // ]},
+        // {label:'Util 工具', value:'util', children:[
+        //   {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,strtotime日期转时间戳,gmt时间格式,json转换,url参数'},
+        //   {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
+        //   {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
+        //   {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,bytes'},
+        //   {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
+        //   {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
+        // ]},
       ]},
 
-      /* Flask */
-      {label:'Flask', value:'python', children:[
+      /* Python */
+      {label:'Python', value:'python', children:[
         {label:'Python项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
+          {label: '项目结构', value: 'object', key:'项目结构'},
         ]},
-        {label:'Service 服务', value:'service', children:[
-          {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
-          {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
-          {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
-          {label: '验证 Token', value: 'token', key:'token'},
-          {label: '通信 Socket', value: 'socket', key:'socket'},
+        {label:'Core 公共', value:'core', children:[
+          {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
         ]},
-        {label:'ORM 数据库', value:'db', children:[
-          {label: '模型 Model', value: 'model', key:'orm,model,模型'},
-          {label: '查询 Select', value: 'select', key:'orm,select,查询'},
-          {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
-          {label: '更新 Update', value: 'update', key:'orm,update,更新'},
-          {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
-          {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
-          {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
-        ]},
-        {label:'Library 类库', value:'library', children:[
-          {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
-          {label: '导出 Export', value: 'export', key:'export,导出,excel'},
-          {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
-          {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
-          {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
-          {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
-          {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
-        ]},
-        {label:'Util 工具', value:'util', children:[
-          {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组,url参数'},
-          {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
-          {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
-          {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode'},
-          {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
-          {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
-        ]},
+        // {label:'Service 服务', value:'service', children:[
+        //   {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
+        //   {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
+        //   {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
+        //   {label: '验证 Token', value: 'token', key:'token'},
+        //   {label: '通信 Socket', value: 'socket', key:'socket'},
+        // ]},
+        // {label:'ORM 数据库', value:'db', children:[
+        //   {label: '模型 Model', value: 'model', key:'orm,model,模型'},
+        //   {label: '查询 Select', value: 'select', key:'orm,select,查询'},
+        //   {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
+        //   {label: '更新 Update', value: 'update', key:'orm,update,更新'},
+        //   {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
+        //   {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
+        //   {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
+        // ]},
+        // {label:'Library 类库', value:'library', children:[
+        //   {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
+        //   {label: '导出 Export', value: 'export', key:'export,导出,excel'},
+        //   {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
+        //   {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
+        //   {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
+        //   {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
+        //   {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
+        // ]},
+        // {label:'Util 工具', value:'util', children:[
+        //   {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组,url参数'},
+        //   {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
+        //   {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
+        //   {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode'},
+        //   {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
+        //   {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
+        // ]},
       ]},
 
       /* SpringBoot */
       {label:'SpringBoot', value:'java', children:[
         {label:'Java项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
+          {label: '项目结构', value: 'object', key:'项目结构'},
         ]},
-        {label:'Service 服务', value:'service', children:[
-          {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
-          {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
-          {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
-          {label: '验证 Token', value: 'token', key:'token'},
-          {label: '通信 Socket', value: 'socket', key:'socket'},
+        {label:'Core 公共', value:'core', children:[
+          {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
         ]},
-        {label:'ORM 数据库', value:'db', children:[
-          {label: '模型 Model', value: 'model', key:'orm,model,模型'},
-          {label: '查询 Select', value: 'select', key:'orm,select,查询'},
-          {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
-          {label: '更新 Update', value: 'update', key:'orm,update,更新'},
-          {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
-          {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
-          {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
-        ]},
-        {label:'Library 类库', value:'library', children:[
-          {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
-          {label: '导出 Export', value: 'export', key:'export,导出,excel'},
-          {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
-          {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
-          {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
-          {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
-          {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
-        ]},
-        {label:'Util 工具', value:'util', children:[
-          {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组'},
-          {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
-          {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
-          {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode,strtobyte'},
-          {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
-          {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
-          {label: '泛型 Dynamic', value: 'dynamic', key:'dynamic,泛型'},
-          {label: '请求响应 Http', value: 'http', key:'http,请求响应'},
-        ]},
+        // {label:'Service 服务', value:'service', children:[
+        //   {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
+        //   {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
+        //   {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
+        //   {label: '验证 Token', value: 'token', key:'token'},
+        //   {label: '通信 Socket', value: 'socket', key:'socket'},
+        // ]},
+        // {label:'ORM 数据库', value:'db', children:[
+        //   {label: '模型 Model', value: 'model', key:'orm,model,模型'},
+        //   {label: '查询 Select', value: 'select', key:'orm,select,查询'},
+        //   {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
+        //   {label: '更新 Update', value: 'update', key:'orm,update,更新'},
+        //   {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
+        //   {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
+        //   {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
+        // ]},
+        // {label:'Library 类库', value:'library', children:[
+        //   {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
+        //   {label: '导出 Export', value: 'export', key:'export,导出,excel'},
+        //   {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
+        //   {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
+        //   {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
+        //   {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
+        //   {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
+        // ]},
+        // {label:'Util 工具', value:'util', children:[
+        //   {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组'},
+        //   {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
+        //   {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
+        //   {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode,strtobyte'},
+        //   {label: '类型转换 Type', value: 'type', key:'type,类型转换,string,int,float'},
+        //   {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
+        //   {label: '泛型 Dynamic', value: 'dynamic', key:'dynamic,泛型'},
+        //   {label: '请求响应 Http', value: 'http', key:'http,请求响应'},
+        // ]},
       ]},
 
-      /* Gin */
-      {label:'Gin', value:'go', children:[
-        {label:'Gin项目', value:'install', children:[
-          {label: '开发环境', value: 'install', key:'开发环境'},
+      /* Go */
+      {label:'Go', value:'go', children:[
+        {label:'Go项目', value:'install', children:[
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
+          {label: '项目结构', value: 'object', key:'项目结构'},
         ]},
-        {label:'Service 服务', value:'service', children:[
-          {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
-          {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
-          {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
-          {label: '验证 Token', value: 'token', key:'token'},
-          {label: '通信 Socket', value: 'socket', key:'socket'},
+        {label:'Core 公共', value:'core', children:[
+          {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
         ]},
-        {label:'ORM 数据库', value:'db', children:[
-          {label: '模型 Model', value: 'model', key:'orm,model,模型'},
-          {label: '查询 Select', value: 'select', key:'orm,select,查询'},
-          {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
-          {label: '更新 Update', value: 'update', key:'orm,update,更新'},
-          {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
-          {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
-          {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
-        ]},
-        {label:'Library 类库', value:'library', children:[
-          {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
-          {label: '导出 Export', value: 'export', key:'export,导出,excel'},
-          {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
-          {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
-          {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
-          {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
-          {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
-        ]},
-        {label:'Util 工具', value:'util', children:[
-          {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,empty是否为空,in_key是否存在KEY,in_array是否存在于数组,三元表达式,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组,url参数,截取小数位数'},
-          {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
-          {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
-          {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode'},
-          {label: '类型转换 Type', value: 'type', key:'type,类型转换,bool,int,int64,float,float64,uint64'},
-          {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
-        ]},
+        // {label:'Service 服务', value:'service', children:[
+        //   {label: '基础 Base', value: 'base', key:'返回json,get参数,post参数,打印输出到控制台,异常错误'},
+        //   {label: '数据 Data', value: 'data', key:'薄雾算法,雪花算法,图片地址'},
+        //   {label: '日志 Logs', value: 'logs', key:'logs,日志,访问日志,信息日志,操作日志,错误日志,其它日志'},
+        //   {label: '验证 Token', value: 'token', key:'token'},
+        //   {label: '通信 Socket', value: 'socket', key:'socket'},
+        // ]},
+        // {label:'ORM 数据库', value:'db', children:[
+        //   {label: '模型 Model', value: 'model', key:'orm,model,模型'},
+        //   {label: '查询 Select', value: 'select', key:'orm,select,查询'},
+        //   {label: '插入 Insert', value: 'insert', key:'orm,insert,插入'},
+        //   {label: '更新 Update', value: 'update', key:'orm,update,更新'},
+        //   {label: '删除 Delete', value: 'delete', key:'orm,delete,删除'},
+        //   {label: '连表 Join', value: 'join', key:'orm,join,连表,关联查询'},
+        //   {label: '事务 Commit', value: 'commit', key:'orm,commit,事务,回滚'},
+        // ]},
+        // {label:'Library 类库', value:'library', children:[
+        //   {label: '请求 Curl', value: 'curl', key:'curl,请求,url参数,request,urlencode,urldecode'},
+        //   {label: '导出 Export', value: 'export', key:'export,导出,excel'},
+        //   {label: '二维码 Qrcode', value: 'qrcode', key:'qrcode,二维码'},
+        //   {label: '缓存 Redis', value: 'redis', key:'redis,缓存'},
+        //   {label: '安全验证 Safety', value: 'safety', key:'safety,安全验证,正则验证,base64加密,base64解密'},
+        //   {label: '通信 WebSocket', value: 'socket', key:'websocket,即时通信'},
+        //   {label: '文件上传 Upload', value: 'upload', key:'upload,文件上传,base64上传,oss签名直传,获取html图片地址'},
+        // ]},
+        // {label:'Util 工具', value:'util', children:[
+        //   {label: '常用工具', value: 'util', key:'util,linux命令,len字符串长度,empty是否为空,in_key是否存在KEY,in_array是否存在于数组,三元表达式,date格式化时间,time时间戳,strtotime日期转时间戳,gmt时间格式,trim去首尾空格,explode拆分字符串为数组,implode数组合成字符串,json转换,arraymerge合并数组,url参数,截取小数位数'},
+        //   {label: '编码/解码 URL', value: 'url', key:'url,urlencode,编码,urldecode,解码'},
+        //   {label: '编码/解码 Base64', value: 'base64', key:'base64,base64_encode,编码,base64_decode,解码,compress,压缩,uncompress,解压,getext,获取后缀'},
+        //   {label: '加密算法 Hash', value: 'hash', key:'hash,加密算法,md5,sha256,hmacsha1,hmacsha256,hexencode'},
+        //   {label: '类型转换 Type', value: 'type', key:'type,类型转换,bool,int,int64,float,float64,uint64'},
+        //   {label: '设备信息 Os', value: 'os', key:'os,设备信息,system,操作系统,browser,浏览器'},
+        // ]},
       ]},
 
       /* Linux */

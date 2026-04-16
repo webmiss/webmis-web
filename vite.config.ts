@@ -17,10 +17,10 @@ export default defineConfig({
       },
     }),
   ],
-  resolve: {  
-    alias: {  
+  resolve: {
+    alias: {
       '@': path.resolve(__dirname, 'src'),
-    }  
+    }
   },
   css: {
     preprocessorOptions: {

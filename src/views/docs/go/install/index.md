@@ -1,44 +1,33 @@
-# WebMIS-Gin
-采用Go + Gin开发，包括HMVC模块化管理、Token验证、Redis缓存等
+# webmis-go
+采用Go + Redis + MariaDB开发的轻量级HMVC基础框架，目录结构清晰，支持CLI方式访问资料方便执行定时脚本。包括HMVC模块化管理、自动路由、CLI命令行、Socket通信、redis缓存、Token机制等功能，提供支付宝、微信、文件上传、图像处理、二维码等常用类。
+
+**演示**
+- 使用文档( [https://webmis.vip/](https://webmis.vip/go/install/index) )
 - 网站-API( [https://go.webmis.vip/](https://go.webmis.vip/) )
-- 前端-API( [https://go.webmis.vip/api/](https://go.webmis.vip/api/) )
-- 后台-API( [https://go.webmis.vip/admin/](https://go.webmis.vip/admin/) )
+- 前端-API( [https://go.webmis.vip/api](https://go.webmis.vip/api) )
+- 后台-API( [https://go.webmis.vip/admin](https://go.webmis.vip/admin) )
 
-<br/>
-
-## 一、下载
+## 安装
 ```bash
-# 克隆项目
-git clone https://github.com/webmiss/webmis-gin.git gin
-git clone https://github.com/webmiss/webmis-tools.git tools
-# 修改权限(linux)
-chmod -R 777 gin/public/upload
-```
-- 数据库: tools/database/data.sql
-- 修改密码: user表password字段，md5加密即可
-- 管理员账号: admin 密码:123456
+# 下载
+$ git clone https://github.com/webmiss/webmis-go.git
+$ cd webmis-go
 
-<br/>
-
-## 二、运行
-#### Bash命令
-```bash
-# 依赖包
+# Linux、MacOS
 ./bash install
-# 运行
-./bash serve
-# 打包
-./bash build
-```
 
-#### Cmd命令
-```bash
-# 依赖包
+# Windows 11 (自动环境安装和配置)
 .\cmd install
-# 运行
-.\cmd serve
-# 打包
-.\cmd build
 ```
 
-<br/><br/>
+## 开发环境
+```bash
+# Linux、MacOS
+./bash serve
+./bash socketServer
+
+# Windows 11
+.\cmd serve
+.\cmd socketServer
+```
+- 浏览器访问 http://127.0.0.1:9030/

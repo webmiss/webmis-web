@@ -9,7 +9,7 @@
             v-for="(v,k) in menus.nav"
             :key="k"
             :class="v.value==pos[0]?'active':''"
-            @click="menusClick([v.value, v.children[0].value, v.children[0].children[1].value])"
+            @click="menusClick([v.value, v.children[0].value, v.children[0].children[0].value])"
           >{{ v.label }}</li>
         </ul>
       </div>
@@ -46,7 +46,7 @@
           <wmInput v-model:value="sea.key" @update:value="seaInput()" height="32px" lineHeight="32px" icon="ui ui_search" padding="0 10px 0 40px" placeholder="请输入关键字"></wmInput>
         </div>
         <ul class="app_sea_list" v-if="sea.list.length>0">
-          <li v-for="(v,k) in sea.list" :class="v.url==pos[1]&&v.value==pos[2]?'active':''" @click="menusClick([pos[0], v.url, v.value])">
+          <li v-for="v in sea.list" :class="v.url==pos[1]&&v.value==pos[2]?'active':''" @click="menusClick([pos[0], v.url, v.value])">
             {{ v.label }}
           </li>
         </ul>
@@ -60,7 +60,7 @@
               </span>
             </div>
             <div v-show="v1.checked">
-              <div v-for="(v2,k2) in v1.children" class="app_menus_li" :class="v1.value==pos[1]&&v2.value==pos[2]?'active':''" @click="menusClick([pos[0], v1.value, v2.value])">
+              <div v-for="v2 in v1.children" class="app_menus_li" :class="v1.value==pos[1]&&v2.value==pos[2]?'active':''" @click="menusClick([pos[0], v1.value, v2.value])">
                 <h3>{{ v2.label }}</h3>
               </div>
             </div>
@@ -105,7 +105,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 /* UI组件 */
 import Env from './config/Env';
@@ -118,8 +117,6 @@ import Menus from './views/docs/Menus'
 import printJS from 'print-js'
 
 // 状态
-const store = useStore();
-const state = store.state;
 const route = useRoute();
 const router = useRouter();
 // 配置

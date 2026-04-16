@@ -17,14 +17,14 @@ vi /etc/passwd
 <br/>
 
 ## 二、证书登录
-#### 1) 公钥文件(一次)
+#### 1) 公钥文件( 一次 )
 ```bash
 mkdir -p /home/git/.ssh
 touch /home/git/.ssh/authorized_keys
 chmod 644 /home/git/.ssh/authorized_keys
 ```
 
-#### 2) RSA密钥
+#### 2) RSA密钥( 可选 )
 ```bash
 # 本地-生成密钥
 ssh-keygen -t rsa
@@ -40,7 +40,7 @@ cat id_rsa.pub >> .ssh/authorized_keys
 # 创建目录
 mkdir /home/git/gitrepo
 chown git:git /home/git/gitrepo
-chmod -R 774 /home/git
+chmod -R 755 /home/git
 cd /home/git/gitrepo
 # 配置
 git config --global init.defaultBranch main
@@ -60,7 +60,7 @@ git init
 touch README.md
 git add README.md
 git commit -m "first commit"
-git remote add origin webmis@127.0.0.1:/home/git/gitrepo/test.git
+git remote add origin git@127.0.0.1:/home/git/gitrepo/test.git
 git push -u origin "main"
 ```
 

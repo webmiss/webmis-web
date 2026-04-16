@@ -1,40 +1,30 @@
-# WebMIS-Python
-采用Python3+Flask开发，包括HMVC模块化管理、Token验证、Redis缓存等
+# webmis-python
+采用Python + Redis + MariaDB开发的轻量级HMVC基础框架，目录结构清晰，支持CLI方式访问资料方便执行定时脚本。包括HMVC模块化管理、自动路由、CLI命令行、Socket通信、redis缓存、Token机制等功能，提供支付宝、微信、文件上传、图像处理、二维码等常用类。
+
+**演示**
+- 使用文档( [https://webmis.vip/](https://webmis.vip/python/install/index) )
 - 网站-API( [https://python.webmis.vip/](https://python.webmis.vip/) )
-- 前端-API( [https://python.webmis.vip/api/](https://python.webmis.vip/api/) )
-- 后台-API( [https://python.webmis.vip/admin/](https://python.webmis.vip/admin/) )
+- 前端-API( [https://python.webmis.vip/api](https://python.webmis.vip/api) )
+- 后台-API( [https://python.webmis.vip/admin](https://python.webmis.vip/admin) )
 
-<br/>
-
-## 一、下载
+## 安装
 ```bash
-# 克隆项目
-git clone https://github.com/webmiss/webmis-flask.git flask
-git clone https://github.com/webmiss/webmis-tools.git tools
-# 修改权限(linux)
-chmod -R 777 flask/public/upload
-```
-- 数据库: tools/database/data.sql
-- 修改密码: user表password字段，md5加密即可
-- 管理员账号: admin 密码:123456
+# 下载
+$ git clone https://github.com/webmiss/webmis-python.git
+$ cd webmis-python
 
-<br/>
-
-## 二、运行
-#### Bash命令
-```bash
-# 依赖包
+# Linux、MacOS
 ./bash install
-# 运行
-./bash serve
+
+# Windows 11 (自动环境安装和配置)
+.\cmd install
 ```
 
-#### Cmd命令
+## 开发环境
 ```bash
-# 依赖包
-.\cmd install
-# 运行
+# Linux、MacOS
+./bash serve
+
+# Windows 11
 .\cmd serve
 ```
-
-<br/><br/>
