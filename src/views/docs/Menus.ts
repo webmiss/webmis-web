@@ -75,7 +75,7 @@ export default class Menus {
         {label:'PHP项目', value:'install', children:[
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
-          {label: '项目结构', value: 'object', key:'项目结构'},
+          {label: '目录结构', value: 'object', key:'目录结构'},
         ]},
         {label:'Core 公共', value:'core', children:[
           {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
@@ -121,7 +121,7 @@ export default class Menus {
         {label:'Python项目', value:'install', children:[
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
-          {label: '项目结构', value: 'object', key:'项目结构'},
+          {label: '目录结构', value: 'object', key:'目录结构'},
         ]},
         {label:'Core 公共', value:'core', children:[
           {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
@@ -166,7 +166,7 @@ export default class Menus {
         {label:'Java项目', value:'install', children:[
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
-          {label: '项目结构', value: 'object', key:'项目结构'},
+          {label: '目录结构', value: 'object', key:'目录结构'},
         ]},
         {label:'Core 公共', value:'core', children:[
           {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},
@@ -213,7 +213,7 @@ export default class Menus {
         {label:'Go项目', value:'install', children:[
           {label: '安装&运行', value: 'index', key:'安装&运行'},
           {label: '打包&发布', value: 'build', key:'打包&发布'},
-          {label: '项目结构', value: 'object', key:'项目结构'},
+          {label: '目录结构', value: 'object', key:'目录结构'},
         ]},
         {label:'Core 公共', value:'core', children:[
           {label: '数据库 Model', value: 'db', key:'数据库,模型,model,sql'},

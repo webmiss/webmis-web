@@ -1,4 +1,4 @@
-import{d as o,c as s,e as n,o as t}from"./vendor-oTex03eR.js";const r={class:"markdown-body"},p={},m="",d=o({__name:"object",setup(c,{expose:a}){return a({frontmatter:{},excerpt:void 0}),(i,e)=>(t(),s("div",r,e[0]||(e[0]=[n("h1",null,"项目结构",-1),n("h3",null,"目录结构",-1),n("pre",null,[n("code",{class:"language-plaintext"},`webmis-java/
+import{d as o,c as s,e as n,o as t}from"./vendor-oTex03eR.js";const r={class:"markdown-body"},p={},m="",d=o({__name:"object",setup(c,{expose:a}){return a({frontmatter:{},excerpt:void 0}),(i,e)=>(t(),s("div",r,e[0]||(e[0]=[n("h1",null,"目录结构",-1),n("pre",null,[n("code",{class:"language-plaintext"},`webmis-java/
 ├── public                                 // 根目录
 ├── src/main/java/vip/webmis/mvc
 │    ├── config                           // 配置文件

@@ -1,4 +1,4 @@
-import{d as o,c as s,e as n,o as t}from"./vendor-oTex03eR.js";const a={class:"markdown-body"},c={},d="",m=o({__name:"object",setup(r,{expose:p}){return p({frontmatter:{},excerpt:void 0}),(l,e)=>(t(),s("div",a,e[0]||(e[0]=[n("h1",null,"项目结构",-1),n("h3",null,"目录结构",-1),n("pre",null,[n("code",{class:"language-plaintext"},`webmis-php/
+import{d as o,c as s,e as n,o as t}from"./vendor-oTex03eR.js";const a={class:"markdown-body"},c={},d="",m=o({__name:"object",setup(r,{expose:p}){return p({frontmatter:{},excerpt:void 0}),(i,e)=>(t(),s("div",a,e[0]||(e[0]=[n("h1",null,"目录结构",-1),n("pre",null,[n("code",{class:"language-plaintext"},`webmis-php/
 ├── app
 │    ├── config                 // 配置文件
 │    ├── librarys               // 第三方类

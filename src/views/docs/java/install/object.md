@@ -1,6 +1,5 @@
-# 项目结构
+# 目录结构
 
-### 目录结构
 ```plaintext
 webmis-java/
 ├── public                                 // 根目录
