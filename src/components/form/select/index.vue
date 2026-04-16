@@ -30,7 +30,9 @@
               display: v.display||typeof v.display=='undefined'?'block':'none',
           }">
             <span class="label">{{ v.label }}</span>
-            <span class="info" v-if="v.info">{{ v.info }}</span>
+            <span class="info" v-if="typeof v.info!=='undefined'" :class="typeof v.info==='string'?'c_info':(v.info?'c_success':'c_danger')">
+              {{ typeof v.info==='string'?v.info:(v.info?state.langs.enable:state.langs.disable) }}
+            </span>
           </li>
         </template>
         <li class="null" v-else></li>
@@ -44,7 +46,9 @@
     <!-- Icon -->
     <i class="wm-select_arrow ui ui_arrow_down" :style="{transform: show?'rotate(180deg)':'rotate(0deg)'}"></i>
     <!-- Value -->
-    <div class="wm-select_value" :class="labelName?'':'none'">{{ labelName || placeholder || state.langs.select }}</div>
+    <div class="wm-select_value" :class="labelName?'':'none'">
+      <div class="nowrap">{{ labelName || placeholder || state.langs.select }}</div>
+    </div>
   </div>
 </template>
 
@@ -52,10 +56,11 @@
 .wm-select{cursor: pointer; position: relative;}
 .wm-select_arrow{position: absolute; z-index: 2; width: 32px; height: 100%; top: 0; right: 0; text-align: center; font-size: 12px; transition: @Transition;}
 .wm-select.show .wm-select_value{border-color: @Primary;}
-.wm-select_value{overflow: hidden; position: relative; width: 100%; height: 100%; padding: 0 32px 0 10px; text-align: left; box-sizing: border-box; border: @BaseBorder 1px solid; border-radius: 4px; background-color: #FFF;}
+.wm-select_value{position: relative; width: 100%; height: 100%; padding: 0 32px 0 10px; text-align: left; box-sizing: border-box; border: @BaseBorder 1px solid; border-radius: 4px; background-color: #FFF;}
 .wm-select_value::after{content: ''; position: absolute; z-index: 1; top: 0; right: 0; width: 32px; height: 100%; background-color: #FFF;}
 .wm-select_value:hover{border-color: @Primary;}
 .wm-select_value.none{color: @SecondaryText;}
+.wm-select_value .nowrap{position: absolute; max-width: calc(100% - 42px);}
 .wm-select_body{position: absolute; z-index: 999; min-width: 80px; left: 50%; transform: translateX(-50%); background-color: #FFF; box-shadow: 0 0 12px rgba(0,0,0,0.2); border-radius: 4px; transition: @Transition;}
 .wm-select_body .top_arrow{position: absolute; bottom: 5px; left: calc(50% - 5px); transform: translateX(-50%);}
 .wm-select_body .top_arrow::before{content: ''; position: absolute; width: 10px; height: 10px; border: @BorderColor 1px solid; border-left-color: transparent; border-top-color: transparent; background-color: #FFF; transform: rotate(45deg); box-sizing: border-box;}
@@ -68,7 +73,7 @@
 .wm-select_list li:hover .label{color: @Primary;}
 .wm-select_list li:hover .info{background-color: #F4F6F8;}
 .wm-select_list .label{text-align: left; width: auto; max-width: none; float: left; color: @Text; padding: 0 16px;}
-.wm-select_list .info{float: right; position: absolute; right: 0; height: 100%; padding: 0 10px; font-size: 12px; color: @RegularText; background-color: #FFF;}
+.wm-select_list .info{float: right; position: absolute; right: 0; height: 100%; padding: 0 10px; font-size: 12px; background-color: #FFF;}
 .wm-select_list .null{height: 120px; line-height: 120px;}
 .wm-select_list .null:hover{cursor: default; background-color: #FFF;}
 .wm-select_list .active{background-color: #F4F6F8;}
@@ -88,8 +93,9 @@ import { useStore } from 'vuex';
 import wmInput from '../../../components/form/input/index.vue';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
-    value: {type: [Array, String], default: ''},            // 默认值
+    value: {type: [Array, String, Number], default: ''},    // 默认值
     options: {type: Array, default: []},                    // 数据: [{label:'男', value:'男', checked: true},{label:'女', value:'女'}]
     multiple: {type: Boolean, default: false},              // 是否多选
     width: {type: String, default: '100%'},                 // 宽
@@ -120,8 +126,8 @@ const labelName = ref('');
 
 /* 监听 */
 watch(()=>props.value, (val: any)=>{
-  if(val) {
-    for(let i in seaList.value) {
+  if(val){
+    for(let i in seaList.value){
       seaList.value[i].checked = val.includes(seaList.value[i].value);
     }
     if(seaList.value.length>0) selectData(false);
@@ -170,12 +176,12 @@ const seaKey = (key: any): void => {
 /* 选择-点击 */
 const selectClick = (k: any): void => {
   // 多选
-  if(props.multiple) {
+  if(props.multiple){
     // 选择
     seaList.value[k].checked = seaList.value[k].checked?false:true;
   } else {
     // 单选
-    for(let i in seaList.value) {
+    for(let i in seaList.value){
       if(i==k) seaList.value[i].checked = seaList.value[k].checked?false:true;
       else seaList.value[i].checked = false;
     }
@@ -194,8 +200,8 @@ const selectData = (isStatus: boolean=true): void => {
   let vals: Array<any> = [];
   let data: Array<any> = [];
   // 数据
-  for(let i in seaList.value) {
-    if(seaList.value[i].checked) {
+  for(let i in seaList.value){
+    if(seaList.value[i].checked){
       labs.push(seaList.value[i].label);
       vals.push(seaList.value[i].value);
       data.push(seaList.value[i]);
@@ -203,7 +209,7 @@ const selectData = (isStatus: boolean=true): void => {
   }
   // 事件
   labelName.value = labs.join(',');
-  if(isStatus) {
+  if(isStatus){
     emit('update:value', vals);
     emit('data', data);
   }

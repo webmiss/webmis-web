@@ -6,14 +6,7 @@
 </style>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onActivated } from 'vue';
-import { useStore } from 'vuex';
-
-// 是否加载
-const isLoad = ref(false);
-// 状态
-const store = useStore();
-const state = store.state;
+import { onMounted, onActivated } from 'vue';
 
 /* 创建完成 */
 onMounted(()=>{

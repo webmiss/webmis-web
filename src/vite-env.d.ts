@@ -6,7 +6,7 @@ declare module '*.md' {
   export default component
 }
 
-declare module '*.md' as string {
+declare module '*.md' {
   const src: string
   export default src
 }

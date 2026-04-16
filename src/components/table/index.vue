@@ -1,8 +1,5 @@
 <template>
-  <div class="wm-table_body scrollbar" :style="{
-    height: height,
-    overflow: overflow,
-  }">
+  <div class="wm-table_body scrollbar" :style="{height: height, overflow: overflow}">
     <table class="wm-table" :style="{width: width, height: options.length==0?height:''}">
       <thead class="wm-table_title">
         <tr>
@@ -15,7 +12,7 @@
             maxWidth: v.maxWidth?v.maxWidth+' !important':'',
             textAlign: v.textAlign
           }">
-            {{ v.title }}
+            <div v-html="v.title"></div>
             <div class="order_body" v-if="['', 'ASC', 'DESC'].includes(v.order)" @click="OrderBy(k, v.index, v.order)">
               <div class="order">
                 <i class="ui ui_arrow_up" :class="v.order=='DESC'?'active':''"></i>
@@ -27,23 +24,50 @@
       </thead>
       <tbody class="wm-table_list">
         <template v-if="options.length>0">
-          <tr v-for="(d, k) in options" :key="k">
-            <td class="checkbox" v-if="isCheckbox" :class="d.checked?'active':''">
-              <wmCheckBox :options="{label:'', value:d.id, checked:d.checked, disabled:d.disabled}" margin="0" @checkbox="Checkbox"></wmCheckBox>
-            </td>
-            <template v-if="typeof d.display=='undefined' || d.display">
+          <template v-for="(d, k) in options" :key="k">
+            <!-- 分段 -->
+            <template v-if="maxLen>0 && (typeof d.display=='undefined' || d.display)">
+              <tr v-if="k<maxLen">
+                <td class="checkbox" v-if="isCheckbox" :class="d.checked?'active':''">
+                  <wm-checkBox :options="{label:'', value:d.id, checked:d.checked, disabled:d.disabled}" margin="0" @checkbox="Checkbox"></wm-checkBox>
+                </td>
+                <td v-for="(v, n) in columns" :key="n" :title="d[v.index]" :class="[d.checked?'active':'', v.class?v.class: '']">
+                  <slot v-if="v.slot" v-bind="d" :name="v.slot" :index="k"></slot>
+                  <span v-else>{{ typeof d[v.index]==='undefined'?'-':d[v.index] }}</span>
+                </td>
+              </tr>
+              <tr v-else-if="isShow && (typeof d.display=='undefined' || d.display)">
+                <td class="checkbox" v-if="isCheckbox" :class="d.checked?'active':''">
+                  <wm-checkBox :options="{label:'', value:d.id, checked:d.checked, disabled:d.disabled}" margin="0" @checkbox="Checkbox"></wm-checkBox>
+                </td>
+                <td v-for="(v, n) in columns" :key="n" :title="d[v.index]" :class="[d.checked?'active':'', v.class?v.class: '']">
+                  <slot v-if="v.slot" v-bind="d" :name="v.slot" :index="k"></slot>
+                  <span v-else>{{ typeof d[v.index]==='undefined'?'-':d[v.index] }}</span>
+                </td>
+              </tr>
+            </template>
+            <!-- 全部 -->
+            <tr v-else-if="typeof d.display=='undefined' || d.display">
+              <td class="checkbox" v-if="isCheckbox" :class="d.checked?'active':''">
+                <wm-checkBox :options="{label:'', value:d.id, checked:d.checked, disabled:d.disabled}" margin="0" @checkbox="Checkbox"></wm-checkBox>
+              </td>
               <td v-for="(v, n) in columns" :key="n" :title="d[v.index]" :class="[d.checked?'active':'', v.class?v.class: '']">
                 <slot v-if="v.slot" v-bind="d" :name="v.slot" :index="k"></slot>
-                <span v-else>{{ d[v.index] || '-' }}</span>
+                <span v-else>{{ typeof d[v.index]==='undefined'?'-':d[v.index] }}</span>
               </td>
-            </template>
-          </tr>
+            </tr>
+          </template>
         </template>
         <slot v-else-if="options.length==0&&isSlot"></slot>
-        <tr v-else>
+        <tr v-else-if="!isBottom">
           <td class="null" :colspan="columns.length+(isCheckbox?1:0)"></td>
         </tr>
       </tbody>
+      <tr v-if="maxLen&&(options.length-maxLen>0)">
+        <td class="wm-table_show" :colspan="columns.length+(isCheckbox?1:0)" style="padding: 0;">
+          <span @click="isShow=!isShow">{{ isShow?'隐藏':'显示剩余' }}( {{ options.length-maxLen }} )</span>
+        </td>
+      </tr>
       <tr v-if="isBottom">
         <td :colspan="columns.length+(isCheckbox?1:0)" style="padding: 0;">
           <slot name="bottom"></slot>
@@ -75,6 +99,9 @@
 .wm-table_list tr:last-child td{border-bottom-color: #F4F6F8;}
 .wm-table_list tr td.active{background: #D7E3EE;}
 .wm-table_list .null{height: 160px;}
+.wm-table_show{text-align: center; background-color: @Primary6; color: @Primary;}
+.wm-table_show span{cursor: pointer; padding: 10px 32px;}
+.wm-table_show span:hover{color: #FF6600;}
 </style>
 
 <script setup lang="ts">
@@ -82,38 +109,40 @@ import { ref, watch } from 'vue';
 import wmCheckBox from '../form/checkbox/index.vue';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
-    columns: {type: Array<any>, default: []},       // 字段: [{title: '名称', index: 'title', slot: 'title', width: '40px', minWidth: '30px', maxWidth: '120px', textAlign: 'right'}]
-    options: {type: Array<any>, default: []},       // 数据: [{id: 1, title: '系统', remark: '', checked:true, }]
-    width: {type: String, default: '100%'},         // 宽
-    height: {type: String, default: '100%'},        // 高
-    overflow: {type: String, default: ''},          // 滚动条
-    isCheckbox: {type: Boolean, default: true},     // 是否多选
-    isSlot: {type: Boolean, default: false},        // 是否自定义表体
-    isBottom: {type: Boolean, default: false},      // 是否底部内容
-  });
+  columns: {type: Array<any>, default: []},       // 字段: [{title: '名称', index: 'title', slot: 'title', width: '40px', minWidth: '30px', maxWidth: '120px', textAlign: 'right'}]
+  options: {type: Array<any>, default: []},       // 数据: [{id: 1, title: '系统', remark: '', checked:true, }]
+  width: {type: String, default: '100%'},         // 宽
+  height: {type: String, default: '100%'},        // 高
+  overflow: {type: String, default: ''},          // 滚动条
+  isCheckbox: {type: Boolean, default: true},     // 是否多选
+  isSlot: {type: Boolean, default: false},        // 是否自定义表体
+  isBottom: {type: Boolean, default: false},      // 是否底部内容
+  maxLen: {type: Number, default: 0},             // 最大显示长度
+});
 const emit = defineEmits(['partially', 'orderBy']);
 // 变量
+const isShow = ref(false);
 const checkbox = ref({checked: false, partially: false, value:'', data:{label:'', value:'all', checked:false}});
 
 /* 监听 */
-watch(()=>props.columns, (val: Array<any>)=>{
+watch(()=>props.columns, ()=>{
   partially();
 },{ deep: true });
 
 /* 全选、全不选 */
 const checkboxAll = (status: boolean | string = ''): void => {
-  if(props.options.length==0) return ;
   checkbox.value.checked = typeof status=='boolean'?status:!checkbox.value.checked;
-  for(let i in props.options) {
+  for(let i in props.options){
     if(!props.options[i].disabled) props.options[i].checked = checkbox.value.checked;
   }
   partially();
 }
 
 /* 勾选 */
-const Checkbox = (label: any, value: any): void => {
-  for(let i in props.options) {
+const Checkbox = (value: any): void => {
+  for(let i in props.options){
     if(props.options[i].id==value){
       props.options[i].checked=!props.options[i].checked;
       break;
@@ -126,7 +155,7 @@ const Checkbox = (label: any, value: any): void => {
 const partially = (): void => {
   let n: number = 0;
   const t: number = props.options.length;
-  for(let i in props.options) {
+  for(let i in props.options){
     if(props.options[i].checked) n++;
   }
   // 状态
@@ -135,7 +164,7 @@ const partially = (): void => {
     checkbox.value.value = 'all';
     checkbox.value.partially = false;
     checkbox.value.data.checked = true;
-  }else if(t>0 && n>0) {
+  }else if(t>0 && n>0){
     checkbox.value.checked = true;
     checkbox.value.value = 'all';
     checkbox.value.partially = true;
@@ -152,8 +181,8 @@ const partially = (): void => {
 /* 获取数据 */
 const getData = (): Array<any> => {
   let data: Array<any> = [];
-  let tmp: Object = {};
-  for(let i in props.options) {
+  let tmp: any = {};
+  for(let i in props.options){
     if(props.options[i].checked){
       tmp = props.options[i];
       tmp['index'] = parseInt(i);
@@ -173,6 +202,9 @@ const OrderBy = (k:number, index: string, order: string): void => {
 }
 
 /* 外部函数 */
-defineExpose({checkboxAll, getData});
+defineExpose({  
+  checkboxAll,
+  getData,
+});
 
 </script>

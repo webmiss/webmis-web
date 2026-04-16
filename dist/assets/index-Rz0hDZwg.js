@@ -1,0 +1,1 @@
+import{d as n,c as r,e,o as s}from"./vendor-oTex03eR.js";const a={class:"markdown-body"},d={},m="",u=n({__name:"index",setup(l,{expose:o}){return o({frontmatter:{},excerpt:void 0}),(c,t)=>(s(),r("div",a,t[0]||(t[0]=[e("h1",null,"TryERP",-1),e("p",null,"基于WebMIS的ERP系统，针对非标品类商品一物一码进销存管理系统。",-1),e("br",null,null,-1)])))}});export{u as default,m as excerpt,d as frontmatter};

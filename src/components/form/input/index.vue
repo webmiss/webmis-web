@@ -40,10 +40,12 @@
       :maxlength="maxlength"
       :disabled="disabled"
       :readonly="readonly"
+      :enterkeyhint="enterkeyhint as any"
       :style="{
         height: height,
         padding: padding,
         lineHeight: lineHeight,
+        borderRadius: radius,
       }"
       @input="input"
       @focus="inputFocus"
@@ -58,10 +60,12 @@
       :maxlength="maxlength"
       :disabled="disabled"
       :readonly="readonly"
+      :enterkeyhint="enterkeyhint as any"
       :style="{
         height: height,
         padding: padding,
         lineHeight: lineHeight,
+        borderRadius: radius,
         textAlign: inputAlign as any,
       }"
       @input="input"
@@ -91,12 +95,13 @@
 </style>
 
 <script setup lang="ts">
-import { ref, watch, getCurrentInstance } from 'vue';
+import { ref, watch, getCurrentInstance, nextTick } from 'vue';
 import { useStore } from 'vuex';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
-  value: {default: ''},                               // 值
+  value: {type: [String, Number], default: ''},       // 值
   type: {type: String, default: 'text'},              // 类型: textarea, text
   width: {type: String, default: '100%'},             // 宽
   height: {type: String, default: '40px'},            // 高
@@ -105,6 +110,7 @@ const props = defineProps({
   maxlength: {type: String, default: ''},             // 最大长度
   padding: {type: String, default: '0 10px'},         // 内部间距
   margin: {type: String, default: '0'},               // 外部间距
+  radius: {type: String, default: '4px'},             // 圆角
   disabled: {type: Boolean, default: false},          // 是否禁用
   readonly: {type: Boolean, default: false},          // 是否读写
   clearable: {type: Boolean, default: false},         // 一键清空
@@ -122,6 +128,7 @@ const props = defineProps({
   textBgcolor: {type: String, default: ''},           // 文本-背景颜色
   textRadius: {type: String, default: '0 4px 4px 0'}, // 文本-圆角
   textLen: {type: Boolean, default: false},           // 是否统计长度
+  enterkeyhint: {type: String, default: 'enter'},     // 键盘动作: enter、go、search、send、next、done
 });
 const { proxy } = getCurrentInstance() as any ;
 const emit = defineEmits(['update:value', 'update:focus', 'update:blur', 'iconClick', 'textClick', 'clear', 'close']);
@@ -161,11 +168,25 @@ const textClick = (): void => {
 const Clear = (): void => {
   emit('clear');
   emit('update:value', '');
-  if(props.type=='textarea') {
+  if(props.type=='textarea'){
     proxy.$refs.wmTextarea.focus();
   }else{
     proxy.$refs.wmInput.focus();
   }
 }
+
+/* 激活输入框 */
+const focus = (): void => {
+  nextTick(()=>{
+    if(props.type=='textarea'){
+      proxy.$refs.wmTextarea.focus();
+    }else{
+      proxy.$refs.wmInput.focus();
+    }
+  });
+}
+
+/* 外部函数 */
+defineExpose({focus});
 
 </script>

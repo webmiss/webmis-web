@@ -30,6 +30,7 @@ import { ref, onMounted, watch, getCurrentInstance } from 'vue';
 import wmImgView from './view.vue';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
   img: {type: String, default: ''},                 // 图片地址
   imgTitle: {type: String, default: ''},            // 图片名称
@@ -52,7 +53,7 @@ const imgShow = ref(false);
 const imgData = ref(<any>[]);
 
 /* 监听 */
-watch(()=>props.img, (val: any)=>{
+watch(()=>props.img, ()=>{
   loadImg();
 },{ deep: true });
 
@@ -74,7 +75,7 @@ const loadImg = (): void => {
 /* 点击选择 */
 const imgClick = (img: string): void => {
   emit('imgClick', img);
-  if(props.isView) {
+  if(props.isView){
     imgShow.value = true;
     imgData.value = [{label: props.imgTitle || img, value:img}];
   }

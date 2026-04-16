@@ -1,5 +1,5 @@
 <template>
-  <div id="container" ref="chart" class="wm-interval_body"></div>
+  <div ref="chart" class="wm-interval_body"></div>
 </template>
 
 <style scoped>
@@ -11,20 +11,21 @@ import { ref, onMounted, watch, getCurrentInstance, nextTick } from 'vue';
 import { Chart } from '@antv/g2';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
-  type: String,                                  // 类型: dodge、stack
   value: Array<any>,                             // 数据: [{label: 'n1', value: 0.4}, {label: 'n2', value: 0.6}]
   theme: {type: String, default: 'classic'},     // 主题: classic、academy、classicDark
   color: {type: String, default: 'label'},       // 分组数据
   height: {type: Number, default: 0},            // 高
   unit: {type: String, default: ''},             // 单位
 });
+/* 公共 */
 const { proxy } = getCurrentInstance() as any ;
 /* 变量 */
 const auto_height = ref(0);
 
 /* 监听 */
-watch(()=>props, (val: any)=>{
+watch(()=>props, ()=>{
   // 初始化
   init();
 },{ deep: true });

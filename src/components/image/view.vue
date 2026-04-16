@@ -73,6 +73,7 @@ import { useStore } from 'vuex';
 import Ui from '../../library/ui';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
     show: {type: Boolean, default: false},              // 是否显示
     index: {type: Number, default: 0},                  // 默认展示
@@ -96,7 +97,7 @@ const other = ref('');
 
 /* 监听 */
 watch(()=>props.show, (val: boolean)=>{
-  if(val) {
+  if(val){
     imgIndex.value = props.index;
     loadImg(imgIndex.value);
     // 事件
@@ -114,7 +115,7 @@ const resizeFun = (): void => {
 /* 键盘事件 */
 const keydownFun = (event: any): void => {
   const keyCode: any = event.keyCode || event.which;
-  switch (keyCode) {
+  switch (keyCode){
     case 37: loadImg(imgIndex.value-1); break;
     case 39: loadImg(imgIndex.value+1); break;
     case 27: close(); break;
@@ -130,7 +131,7 @@ const loadImg = (k: number): void => {
   imgIndex.value = k;
   // 图片
   let imgUrlTmp: string = props.options[k]?props.options[k].value:'';
-  if(!imgUrlTmp) {
+  if(!imgUrlTmp){
     close();
     return Ui.Toast('无图片地址');
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="wm-dialog_body" :style="{visibility:cfg.show?'inherit':'hidden'}">
     <wmPopup ref="Popup" v-model:show="cfg.show" width="100%" height="100%" position="top" :time="600">
-      <div class="wm-dialog_bg" @click="close(bgClose?true:false)"></div>
+      <div class="wm-dialog_bg" @click="bgClose?close(true):''"></div>
       <div class="wm-dialog" :style="{width:width, maxWidth:maxWidth, height:height, borderRadius:borderRadius}">
         <!-- Title -->
         <div class="wm-dialog_title">
@@ -36,7 +36,7 @@
 .wm-dialog_close::after,.wm-dialog_close::before{content: ''; position: absolute; width: 12px; height: 1.6px; background-color: #666; left: 50%; top: 50%; transform-origin: center;}
 .wm-dialog_close::after{transform: rotate(45deg); margin-left: -16%;}
 .wm-dialog_close::before{transform: rotate(-45deg); margin-left: -16%;}
-.wm-dialog_top{position: relative; overflow: hidden;}
+.wm-dialog_top{position: relative;}
 .wm-dialog_content{width: 100%; height: 100%;}
 .wm-dialog_bottom{position: relative; padding: 16px 0; text-align: center;}
 </style>
@@ -46,6 +46,7 @@ import { ref, watch } from 'vue';
 import wmPopup from '../../components/popup/index.vue';
 
 /* 参数 */
+// @ts-ignore
 const props = defineProps({
   show: {type: Boolean, default: false},          // 是否显示
   title: {type: String, default: ''},             // 标题
@@ -65,7 +66,7 @@ const cfg = ref({show: false, width:0, height:0});
 /* 监听 */
 watch(()=>props.show, (val: boolean)=>{
   cfg.value.show = val;
-  if(val) {
+  if(val){
     cfg.value.width =  window.innerWidth;
     cfg.value.height =  window.innerHeight;
     // 事件
@@ -76,7 +77,7 @@ watch(()=>props.show, (val: boolean)=>{
 /* 键盘事件 */
 const keydownFun = (event: any): void => {
   const keyCode: any = event.keyCode || event.which;
-  switch (keyCode) {
+  switch (keyCode){
     case 27: close(true); break;
   }
 }
